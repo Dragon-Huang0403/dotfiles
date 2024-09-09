@@ -1,0 +1,35 @@
+[core]
+	excludesfile = /Users/dragon/.gitignore_global
+	editor = code -w
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[alias]
+	lgb = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches
+	root = rev-parse --show-toplevel
+[user]
+	name = Dragon Huang
+	email = j0918023423@gmail.com
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINm8BC7ZtWI34jwt7ik9ftc9tgc1QN3660Yf9jgNeqV8
+[commit]
+	template = /Users/dragon/.stCommitMsg
+	gpgsign = true
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+[url "git@github.com:"]
+	insteadOf = https://github.com
+[init]
+	templateDir = /Users/dragon/.git-template
+[maintenance]
+	repo = /Users/dragon/projects/SRE-Program-Batch1
+[push]
+	autoSetupRemote = true
+[diff "exif"]
+	textconv = exiftool
+[rebase]
+	updateRefs = true

@@ -1,6 +1,7 @@
 [core]
 	excludesfile = /Users/dragon/.gitignore_global
-	editor = code -w
+	editor = vim
+	pager = delta
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 
@@ -33,3 +34,16 @@
 	textconv = exiftool
 [rebase]
 	updateRefs = true
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true    # use n and N to move between diff sections
+		line-numbers = true
+
+    # delta detects terminal colors automatically; set one of these to disable auto-detection
+    # dark = true
+    # light = true
+
+[merge]
+    conflictstyle = zdiff3

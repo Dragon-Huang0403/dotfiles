@@ -32,7 +32,7 @@
 vault = "Private"
 
 [[ssh-keys]]
-vault = "dev"
+vault = "Subscript"
 
 [[ssh-keys]]
-vault = "Infra"
+vault = "Dev"

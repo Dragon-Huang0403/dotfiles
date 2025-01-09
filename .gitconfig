@@ -26,10 +26,14 @@
 	insteadOf = https://github.com
 [init]
 	templateDir = /Users/dragon/.git-template
+	defaultBranch = main
 [maintenance]
 	repo = /Users/dragon/projects/SRE-Program-Batch1
 [push]
 	autoSetupRemote = true
+[diff]
+	algorithm = histogram
+	submodule = log
 [diff "exif"]
 	textconv = exiftool
 [rebase]
@@ -48,3 +52,11 @@
 
 [includeIf "gitdir:~/subscript/"]
   path = ~/.subscript.gitconfig
+[rerere]
+	enabled = true
+[status]
+	submoduleSummary = true
+[submodule]
+	recurse = true
+[branch]
+	sort = -committerdate

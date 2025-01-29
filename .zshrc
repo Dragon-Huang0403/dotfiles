@@ -112,7 +112,7 @@ source $ZSH/oh-my-zsh.sh
 
 function lazyCode(){
     touch $1
-    code $1
+    cursor $1
 }
 
 function getWeather(){
@@ -172,6 +172,9 @@ export PATH="/opt/homebrew/opt/binutils/bin:$PATH"
 export PATH="$PATH:/Users/dragon/.local/bin"
 
 alias cat="bat"
+
+# For setup eslint config globally, so it knows where to find eslint config from global node_modules
+export NODE_PATH=$(npm root -g)
 
 
 [[ -f "$HOME/fig-export/dotfiles/dotfile.zsh" ]] && builtin source "$HOME/fig-export/dotfiles/dotfile.zsh"

@@ -1,13 +1,11 @@
+# https://blog.gitbutler.com/how-git-core-devs-configure-git/
+
+[column]
+	ui = auto
 [core]
-	excludesfile = /Users/dragon/.gitignore_global
+	excludesfile = ~/.gitignore_global
 	editor = vim
 	pager = delta
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
 [alias]
 	lgb = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches
 	root = rev-parse --show-toplevel
@@ -17,6 +15,7 @@
 	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINm8BC7ZtWI34jwt7ik9ftc9tgc1QN3660Yf9jgNeqV8
 [commit]
 	gpgsign = true
+	verbose = true
 [gpg]
 	format = ssh
 [gpg "ssh"]
@@ -25,18 +24,24 @@
 [url "git@github.com:"]
 	insteadOf = https://github.com
 [init]
-	templateDir = /Users/dragon/.git-template
 	defaultBranch = main
 [maintenance]
 	repo = /Users/dragon/projects/SRE-Program-Batch1
 [push]
 	autoSetupRemote = true
+	default = simple
+	followTags = true
 [diff]
 	algorithm = histogram
 	submodule = log
+	colorMoved = plain
+	mnemonicPrefix = true
+	renames = true
 [diff "exif"]
 	textconv = exiftool
 [rebase]
+	autoSquash = true
+	autoStash = true
 	updateRefs = true
 [interactive]
 	diffFilter = delta --color-only
@@ -54,9 +59,18 @@
   path = ~/.subscript.gitconfig
 [rerere]
 	enabled = true
+	autoupdate = true
 [status]
 	submoduleSummary = true
 [submodule]
 	recurse = true
 [branch]
 	sort = -committerdate
+[tag]
+	sort = version:refname
+[fetch]
+	prune = true
+	pruneTags = true
+	all = true
+[help]
+	autocorrect = prompt

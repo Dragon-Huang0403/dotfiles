@@ -34,11 +34,38 @@ module.exports = [
       'no-unused-vars': 'error',
 
       // https://github.com/lydell/eslint-plugin-simple-import-sort?tab=readme-ov-file#example-configuration
-      'simple-import-sort/imports': 'error',
-      'simple-import-sort/exports': 'error',
+      'simple-import-sort/imports': [
+        'warn',
+        {
+          groups: [
+            // Node.js built-ins
+            [
+              '^node:.*',
+              `^(${require('module').builtinModules.join('|')})(/.*)?$`,
+            ],
+            // Packages (third-party libraries)
+            ['^@?\\w'],
+            // Imports starting with "components" or "shared"
+            [
+              'api',
+              'components',
+              'consts',
+              'models',
+              'shared',
+              'utils',
+              'views',
+              'images',
+            ].map((group) => `^${group}(/.*)?$`),
+            // Relative imports (starting with . or ..)
+            ['^\\.'],
+          ],
+        },
+      ],
+      'simple-import-sort/exports': 'warn',
       'import/first': 'error',
       'import/newline-after-import': 'error',
       'import/no-duplicates': 'error',
+      'no-console': ['warn'],
     },
     settings: {
       react: {

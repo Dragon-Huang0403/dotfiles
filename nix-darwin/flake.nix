@@ -35,6 +35,8 @@
       system.defaults = {
         dock.autohide = true;
         dock.mru-spaces = false;
+        dock.orientation = "left";
+        dock.appswitcher-all-displays = true;
         finder.AppleShowAllExtensions = true;
         finder.FXPreferredViewStyle = "clmv";
         screencapture.location = "~/screenshots";

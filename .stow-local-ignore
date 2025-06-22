@@ -1,0 +1,5 @@
+.stowrc
+.gitignore
+Brewfile
+eslint.config.js
+README.md

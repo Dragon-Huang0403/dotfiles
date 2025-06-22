@@ -25,8 +25,6 @@
 	insteadOf = https://github.com
 [init]
 	defaultBranch = main
-[maintenance]
-	repo = /Users/dragon/projects/SRE-Program-Batch1
 [push]
 	autoSetupRemote = true
 	default = simple

@@ -1,0 +1,5 @@
+.actrc
+.cursor
+memory-bank/**/*.md
+docs/archive
+CLAUDE.local.md

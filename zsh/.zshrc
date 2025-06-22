@@ -7,12 +7,15 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+export PATH="/opt/homebrew/opt/binutils/bin:/opt/homebrew/bin:$PATH"
+export PATH="$PATH:/Users/dragon/.local/bin"
+export PATH="$PATH:/Users/dragonhunag/subscript/scripts/local"
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -137,14 +140,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# pnpm
-export PNPM_HOME="/Users/dragon/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
 # terminal theme
 source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
 
@@ -153,7 +148,6 @@ source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
 
 # Command line tools
 eval "$(zoxide init zsh)"
-
 
 export PATH="/usr/local/bin:$PATH"
 export PATH="/Users/dragon/Library/Python/3.9/bin:$PATH"
@@ -168,15 +162,10 @@ SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
 
 # complete -C '/usr/local/bin/aws_zcompleter' aws
 
-export PATH="/opt/homebrew/opt/binutils/bin:$PATH"
-export PATH="$PATH:/Users/dragon/.local/bin"
-export PATH="$PATH:/Users/dragonhunag/subscript/scripts/local"
-
 alias cat="bat"
 
 # For setup eslint config globally, so it knows where to find eslint config from global node_modules
 export NODE_PATH=$(npm root -g)
-
 
 [[ -f "$HOME/fig-export/dotfiles/dotfile.zsh" ]] && builtin source "$HOME/fig-export/dotfiles/dotfile.zsh"
 

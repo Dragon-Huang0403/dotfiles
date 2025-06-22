@@ -10,6 +10,7 @@ fi
 export PATH="/opt/homebrew/opt/binutils/bin:/opt/homebrew/bin:$PATH"
 export PATH="$PATH:/Users/dragon/.local/bin"
 export PATH="$PATH:/Users/dragonhunag/subscript/scripts/local"
+export XDG_CONFIG_HOME="$HOME/.config"
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH

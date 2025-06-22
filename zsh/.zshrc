@@ -1,19 +1,9 @@
-# Q pre block. Keep at the top of this file.
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-export PATH="/opt/homebrew/opt/binutils/bin:/opt/homebrew/bin:$PATH"
-export PATH="$PATH:/Users/dragon/.local/bin"
-export PATH="$PATH:/Users/dragonhunag/subscript/scripts/local"
-export XDG_CONFIG_HOME="$HOME/.config"
-
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+# fi
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -114,30 +104,26 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-function lazyCode(){
-    touch $1
-    cursor $1
+# Quickly create + open file
+function lazyCode() {
+  touch "$1"
+  cursor "$1"
 }
 
-function getWeather(){
-  curl https://wttr.in/$1
+# Get weather from wttr.in
+function getWeather() {
+  curl "https://wttr.in/$1"
 }
-
-function getWeather2(){
-  curl https://v2.wttr.in/$1
-}
-
 
 alias c="lazyCode"
-alias p="pnpm"
 alias weather="getWeather"
-alias weather2="getWeather2"
 alias gcs="gh copilot suggest"
 alias gce="gh copilot explain"
 alias dive="docker run -ti --rm  -v /var/run/docker.sock:/var/run/docker.sock wagoodman/dive"
+alias cat="bat"
 
+# NVM
 export NVM_DIR="$HOME/.nvm"
-
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
@@ -147,28 +133,5 @@ source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Command line tools
+# Command Tools
 eval "$(zoxide init zsh)"
-
-export PATH="/usr/local/bin:$PATH"
-export PATH="/Users/dragon/Library/Python/3.9/bin:$PATH"
-
-# For golang libraryw
-export PATH="$PATH:$(go env GOPATH)/bin"
-# bun completions
-[ -s "/Users/dragon/.bun/_bun" ] && source "/Users/dragon/.bun/_bun"
-
-SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
-# source ~/.config/op/plugins.sh
-
-# complete -C '/usr/local/bin/aws_zcompleter' aws
-
-alias cat="bat"
-
-# For setup eslint config globally, so it knows where to find eslint config from global node_modules
-export NODE_PATH=$(npm root -g)
-
-[[ -f "$HOME/fig-export/dotfiles/dotfile.zsh" ]] && builtin source "$HOME/fig-export/dotfiles/dotfile.zsh"
-
-# Q post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"

@@ -23,7 +23,7 @@ dotfiles_echo() {
   shift
 
   # shellcheck disable=SC2059
-  printf "\\n[DOTFILES] ${fmt}\\n" "$@"
+  printf "[DOTFILES] ${fmt}\\n" "$@"
 }
 
 # Backup a file that would conflict with stow
@@ -145,9 +145,10 @@ sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.serve
   NetBIOSName -string "$HOST_NAME"
 
 # Display configured names
-printf "ComputerName:  ==> [%s]\\n" "$COMPUTER_NAME"
-printf "LocalHostName: ==> [%s]\\n" "$LOCAL_HOST_NAME"
-printf "HostName:      ==> [%s]\\n" "$HOST_NAME"
+dotfiles_echo "ComputerName:  ==> [%s]" "$COMPUTER_NAME"
+dotfiles_echo "LocalHostName: ==> [%s]" "$LOCAL_HOST_NAME"
+dotfiles_echo "HostName:      ==> [%s]" "$HOST_NAME"
+echo
 
 # ============================================================================
 # DIRECTORY SETUP
@@ -209,6 +210,8 @@ for item in *; do
   fi
 done
 
+echo
+
 # Apply stow symlinks
 dotfiles_echo "Creating symlinks with GNU Stow..."
 
@@ -219,6 +222,8 @@ for item in *; do
     stow -v "$item"/
   fi
 done
+
+echo
 
 # ============================================================================
 # APPLICATION-SPECIFIC CONFIGURATION

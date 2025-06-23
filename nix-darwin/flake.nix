@@ -53,9 +53,27 @@
       # Homebrew needs to be installed on its own!
       homebrew.enable = true;
       homebrew.casks = [
+        "iterm2"
+        "sioyek"
+        "stats"
+        "google-chrome"
+        "shottr"
+        "switchkey"
+        "tomatobar"
+        "orbstack"
+        "devtoys"
+        "1password-cli"
       ];
       homebrew.brews = [
       ];
+
+      system.activationScripts.iterm2Prefs.text = ''
+        if [ -d "/Applications/iTerm.app" ]; then
+          echo "Configuring iTerm2 preferences..."
+          defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$HOME/dotfiles/iterm2"
+          defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
+        fi
+      '';
     };
   in
   {

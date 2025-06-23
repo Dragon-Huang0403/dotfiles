@@ -1,3 +1,29 @@
+#!/bin/zsh
+#
+# .zshrc - Run on interactive Zsh session.
+#
+
+
+#
+# Profiling
+#
+
+[[ "$ZPROFRC" -ne 1 ]] || zmodload zsh/zprof
+alias zprofrc="ZPROFRC=1 zsh"
+
+#
+# Zstyles
+#
+
+# Load .zstyles file with customizations.
+[[ -r ${ZDOTDIR:-$HOME}/.zstyles ]] && source ${ZDOTDIR:-$HOME}/.zstyles
+
+#
+# Aliases
+#
+[[ -r ${ZDOTDIR:-$HOME}/.zaliases ]] && source ${ZDOTDIR:-$HOME}/.zaliases
+
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -104,24 +130,6 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Quickly create + open file
-function lazyCode() {
-  touch "$1"
-  cursor "$1"
-}
-
-# Get weather from wttr.in
-function getWeather() {
-  curl "https://wttr.in/$1"
-}
-
-alias c="lazyCode"
-alias weather="getWeather"
-alias gcs="gh copilot suggest"
-alias gce="gh copilot explain"
-alias dive="docker run -ti --rm  -v /var/run/docker.sock:/var/run/docker.sock wagoodman/dive"
-alias cat="bat"
-
 # NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -136,5 +144,9 @@ source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
 # Command Tools
 eval "$(zoxide init zsh)"
 
+# Finish profiling by calling zprof.
+[[ "$ZPROFRC" -eq 1 ]] && zprof
+[[ -v ZPROFRC ]] && unset ZPROFRC
 
-source $HOME/.zstylerc
+# Always return success
+true

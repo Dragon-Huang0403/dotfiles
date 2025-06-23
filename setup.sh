@@ -226,21 +226,6 @@ done
 echo
 
 # ============================================================================
-# APPLICATION-SPECIFIC CONFIGURATION
-# ============================================================================
-
-# Configure iTerm2 preferences if installed
-if [ -d "/Applications/iTerm.app" ]; then
-  dotfiles_echo "Configuring iTerm2 preferences..."
-  
-  # Set custom preferences folder
-  defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$DOTFILES/iterm2"
-  
-  # Enable loading from custom folder
-  defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
-fi
-
-# ============================================================================
 # COMPLETION
 # ============================================================================
 

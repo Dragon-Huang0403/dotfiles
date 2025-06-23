@@ -195,7 +195,6 @@ cask "wireshark"
 cask "postman"
 cask "cursor"
 cask "shottr"
-cask "iterm2"
 cask "switchkey"
 # Menu bar pomodoro timer
 cask "tomatobar"

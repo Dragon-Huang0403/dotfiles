@@ -1,0 +1,19 @@
+#!/bin/zsh
+
+# Quickly create + open file
+function lazyCode() {
+  touch "$1"
+  cursor "$1"
+}
+
+# Get weather from wttr.in
+function getWeather() {
+  curl "https://wttr.in/$1"
+}
+
+alias c="lazyCode"
+alias weather="getWeather"
+alias gcs="gh copilot suggest"
+alias gce="gh copilot explain"
+alias dive="docker run -ti --rm  -v /var/run/docker.sock:/var/run/docker.sock wagoodman/dive"
+alias cat="bat"

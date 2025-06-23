@@ -16,6 +16,11 @@ for xdgdir in XDG_{CONFIG,CACHE,DATA,STATE}_HOME XDG_RUNTIME_DIR; do
 done
 
 #
+# Brew
+#
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+#
 # Paths
 #
 
@@ -28,14 +33,17 @@ typeset -gU path fpath cdpath mailpath
 #   $cdpath
 # )
 
-# Set the list of directories that zsh searches for commands.
+# Set the list of directories that zsh searches for commands in order.
 path=(
+  $HOME/.nix-profile/bin             # nix-user packages
+  /run/current-system/sw/bin         # nix-darwin system profile
+  /nix/var/nix/profiles/default/bin  # default system profile
+  /opt/{homebrew,local}/{,s}bin(N)   # brew
+  $path
   $HOME/{,s}bin(N)
-  /opt/{homebrew,local}/{,s}bin(N)
   /usr/local/{,s}bin(N)
   $HOME/.local/bin(N)
   $HOME/subscript/scripts/local(N)
-  $path
 )
 
 # For golang library
@@ -63,11 +71,6 @@ export PAGER="${PAGER:-less}"
 #
 
 export LANG="${LANG:-en_US.UTF-8}"
-
-#
-# Brew
-#
-eval "$(/opt/homebrew/bin/brew shellenv)"
 
 #
 # Added by OrbStack: command-line tools and integration

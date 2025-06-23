@@ -1,13 +1,13 @@
-# dotfiles
+# Dotfiles
 
-Personal dotfiles managed with GNU Stow for macOS.
+Personal dotfiles for macOS managed with GNU Stow and Nix Darwin.
 
 ## Prerequisites
 
 - macOS
-- Nix installed using [Determinate System’s Nix Installer for the shell](https://github.com/DeterminateSystems/nix-installer)
 - [Homebrew](https://brew.sh/)
 - GNU Stow: `brew install stow`
+- [Nix](https://github.com/DeterminateSystems/nix-installer) (optional, for Nix Darwin)
 
 ## Installation
 
@@ -15,38 +15,55 @@ Personal dotfiles managed with GNU Stow for macOS.
 git clone https://github.com/Dragon-Huang0403/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 ./setup.sh
-nix run nix-darwin/nix-darwin-24.11#darwin-rebuild -- switch --flake ~/dotfiles/nix-darwin#Subscript
 ```
 
-## Update the config
+The setup script will:
+
+- Back up existing configs to `backup/` with timestamps
+- Create symlinks using GNU Stow
+- Configure system settings
+- Set up Nix Darwin (if Nix is installed)
+
+## Directory Structure
+
+```
+dotfiles/
+├── 1Password/     # SSH agent config
+├── aws/           # AWS CLI config
+├── bin/           # Personal scripts
+├── git/           # Git configuration
+├── nix-darwin/    # Nix Darwin flake
+├── ssh/           # SSH config
+├── zsh/           # Zsh configuration
+└── setup.sh       # Installation script
+```
+
+## Usage
+
+### Update configurations
 
 ```bash
+# Re-run setup after changes
 ~/dotfiles/setup.sh
-darwin-rebuild switch --flake ~/dotfiles/nix-darwin#Subscript
 ```
 
-## What it does
+## How it works
 
-- Creates symlinks for configuration files using GNU Stow
-- Backs up existing files to `backup/` with timestamps
-- Configures macOS system settings
-- Sets up iTerm2 preferences (if installed)
+GNU Stow creates symlinks from your home to this repo:
 
-## Structure
+```
+~/dotfiles/git/.gitconfig → ~/.gitconfig
+~/dotfiles/zsh/.zshrc     → ~/.zshrc
+```
 
-Each directory represents a package that will be symlinked to `$HOME`:
+Existing files are safely backed up before creating symlinks.
 
-- `git/` → Git configuration
-- `zsh/` → Zsh shell configuration
-- `1Password/` → 1Password SSH agent config
-- etc.
+## Troubleshooting
 
-Directories excluded from stowing:
+- **Missing Stow**: Run `brew install stow`
+- **Conflicts**: Check `~/dotfiles/backup/` for backed up files
+- **Nix issues**: Ensure Nix is properly installed
 
-- `backup/` - Conflict backups
-- `iterm2/` - iTerm2 preferences (handled separately)
-- `.git/`, `.github/` - Repository files
+## License
 
-## Safety
-
-The script is idempotent and can be run multiple times. Existing files are backed up before being replaced.
+Free to use and modify.

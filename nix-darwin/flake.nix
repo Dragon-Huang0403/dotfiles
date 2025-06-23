@@ -34,6 +34,8 @@
         tmux
         zsh-powerlevel10k
         lazygit
+        shellcheck
+        codespell
         nodejs_18_17_1
       ];
 

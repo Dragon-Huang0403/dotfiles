@@ -1,5 +1,5 @@
 {
-  description = "Example nix-darwin system flake";
+  description = "Multi-host nix-darwin configuration";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
@@ -9,96 +9,25 @@
 
   outputs = inputs@{ self, nix-darwin, nixpkgs }:
   let
-    overlay = (final: prev: {
-      nodejs_18_17_1 = prev.stdenv.mkDerivation {
-        pname   = "nodejs";
-        version = "18.17.1";
-
-        src = prev.fetchurl {
-          url    = "https://nodejs.org/dist/v18.17.1/node-v18.17.1-darwin-arm64.tar.gz";
-          hash   = "sha256-GMpxbqV1IrkEc3d8ufh4Rn93/fgm03vrFaCIn910Uz4=";
-        };
-
-        installPhase = ''
-          mkdir -p $out
-          tar -xzf $src --strip-components=1 -C $out
-        '';
-      };
-    });
-
-    configuration = { pkgs, ... }: {
-      nixpkgs.overlays = [ overlay ];
-
-      environment.systemPackages = with pkgs; [
-        go
-        tmux
-        zsh-powerlevel10k
-        lazygit
-        shellcheck
-        codespell
-        nodejs_18_17_1
-      ];
-
-      # Necessary for using flakes on this system.
-      nix.settings.experimental-features = "nix-command flakes";
-
-      # Enable alternative shell support in nix-darwin.
-      programs.zsh.enable = true;
-
-      # Set Git commit hash for darwin-version.
-      system.configurationRevision = self.rev or self.dirtyRev or null;
-
-      security.pam.enableSudoTouchIdAuth = true;
-      nix.useDaemon = true;
-      nix.enable = false;
-
-      system.defaults = {
-        dock.autohide = true;
-        dock.mru-spaces = false;
-        dock.orientation = "left";
-        dock.appswitcher-all-displays = true;
-        finder.AppleShowAllExtensions = true;
-        finder.FXPreferredViewStyle = "clmv";
-        screencapture.location = "~/screenshots";
-        screensaver.askForPasswordDelay = 10;
-      };
-
-      # Used for backwards compatibility, please read the changelog before changing.
-      # $ darwin-rebuild changelog
-      system.stateVersion = 5;
-
-      # The platform the configuration will be used on.
-      nixpkgs.hostPlatform = "aarch64-darwin";
-
-      # Homebrew needs to be installed on its own!
-      homebrew.enable = true;
-      homebrew.casks = [
-        "iterm2"
-        "sioyek"
-        "stats"
-        "google-chrome"
-        "shottr"
-        "switchkey"
-        "tomatobar"
-        "orbstack"
-        "devtoys"
-        "1password-cli"
-      ];
-      homebrew.brews = [ ];
-
-      system.activationScripts.iterm2Prefs.text = ''
-        if [ -d "/Applications/iTerm.app" ]; then
-          echo "Configuring iTerm2 preferences..."
-          defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$HOME/dotfiles/iterm2"
-          defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
-        fi
-      '';
+    # Function to create a darwin system for a specific host
+    mkDarwinSystem = hostname: nix-darwin.lib.darwinSystem {
+      modules = [ ./hosts/${hostname}.nix ];
+      specialArgs = { inherit self; };
     };
   in {
-    # Build darwin flake using:
-    # $ darwin-rebuild build --flake .#Subscript
-    darwinConfigurations."Subscript" = nix-darwin.lib.darwinSystem {
-      modules = [ configuration ];
+    # Define configurations for each host
+    darwinConfigurations = {
+      # Build with: darwin-rebuild build --flake .#Subscript
+      "Subscript" = mkDarwinSystem "Subscript";
+      
+      # Build with: darwin-rebuild build --flake .#WorkMac
+      "WorkMac" = mkDarwinSystem "WorkMac";
+      
+      # Add more hosts as needed:
+      # "MacBookPro" = mkDarwinSystem "MacBookPro";
     };
+
+    # Optional: Set a default configuration
+    darwinPackages = self.darwinConfigurations."Subscript".pkgs;
   };
 }

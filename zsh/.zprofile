@@ -86,5 +86,8 @@ if command -v npm &>/dev/null; then
   export NODE_PATH=$(npm root -g)
 fi
 
+# For nvm lazy load with zsh-nvm plugin
+export NVM_LAZY_LOAD=true
+
 # Make Apple Terminal behave.
 export SHELL_SESSIONS_DISABLE=1

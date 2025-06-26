@@ -44,7 +44,7 @@ alias zprofrc="ZPROFRC=1 zsh"
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
 export ZSH="$HOME/.oh-my-zsh"
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting fzf-tab)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting fzf-tab zsh-nvm)
 source $ZSH/oh-my-zsh.sh
 
 # 
@@ -67,14 +67,6 @@ source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
 #
 
 [[ -r ${ZDOTDIR:-$HOME}/.zaliases ]] && source ${ZDOTDIR:-$HOME}/.zaliases
-
-# 
-# NVM
-# 
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # 
 # Command Tools

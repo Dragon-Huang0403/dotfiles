@@ -6,6 +6,8 @@
     zsh-powerlevel10k
     tmux
 
+    eza # ls replacement
+
     lazygit
 
     codespell

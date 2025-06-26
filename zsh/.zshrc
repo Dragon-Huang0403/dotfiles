@@ -148,5 +148,8 @@ eval "$(zoxide init zsh)"
 [[ "$ZPROFRC" -eq 1 ]] && zprof
 [[ -v ZPROFRC ]] && unset ZPROFRC
 
+# Atuin, Shell history
+eval "$(atuin init zsh --disable-up-arrow)"
+
 # Always return success
 true

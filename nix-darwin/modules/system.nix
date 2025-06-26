@@ -38,7 +38,7 @@
       
       # Don't group windows by application in Mission Control
       # (i.e. use the old Exposé behavior instead)
-      expose-group-by-app = false;
+      expose-group-apps = false;
       
       # Disable Dashboard
       dashboard-in-overlay = true;

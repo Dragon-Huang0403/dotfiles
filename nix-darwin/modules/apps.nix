@@ -2,12 +2,16 @@
 
 {
   environment.systemPackages = with pkgs; [
-    go
-    tmux
+    atuin
     zsh-powerlevel10k
+    tmux
+
     lazygit
-    shellcheck
+
     codespell
+    shellcheck
+    
+    go
     nodejs_18_17_1
   ];
 }

@@ -43,7 +43,6 @@ path=(
   $HOME/{,s}bin(N)
   /usr/local/{,s}bin(N)
   $HOME/.local/bin(N)
-  $HOME/subscript/scripts/local(N)
 )
 
 # For golang library

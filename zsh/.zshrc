@@ -80,6 +80,11 @@ eval "$(zoxide init zsh)"
 
 eval "$(atuin init zsh --disable-up-arrow)"
 
+#
+# Local zshrc
+#
+[[ -r ${ZDOTDIR:-$HOME}/.zshrc_local ]] && source ${ZDOTDIR:-$HOME}/.zshrc_local
+
 # Finish profiling by calling zprof.
 [[ "$ZPROFRC" -eq 1 ]] && zprof
 [[ -v ZPROFRC ]] && unset ZPROFRC

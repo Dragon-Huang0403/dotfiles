@@ -4,7 +4,9 @@
   environment.systemPackages = with pkgs; [
     atuin
     zsh-powerlevel10k
+
     tmux
+    tmuxinator
 
     eza # ls replacement
 

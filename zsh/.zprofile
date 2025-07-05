@@ -72,10 +72,6 @@ export PAGER=less
 export LANG="${LANG:-en_US.UTF-8}"
 
 #
-# Added by OrbStack: command-line tools and integration
-source ~/.orbstack/shell/init.zsh 2>/dev/null || :
-
-#
 # SSH
 #
 export SSH_AUTH_SOCK="$HOME/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock"

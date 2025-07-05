@@ -5,6 +5,8 @@
     atuin
     zsh-powerlevel10k
 
+    devcontainer
+
     tmux
     tmuxinator
 

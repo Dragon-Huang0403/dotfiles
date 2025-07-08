@@ -352,6 +352,7 @@ readonly -a STOW_IGNORE_DIRECTORIES=(
   ".git"        # Git repository files
   ".github"     # GitHub specific files
   "nix-darwin"  # Nix Darwin configuration (handled by darwin_rebuild)
+  ".vscode"
   "raycast_scripts"
 )
 

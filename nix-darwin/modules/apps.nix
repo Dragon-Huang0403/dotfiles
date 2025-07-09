@@ -18,6 +18,5 @@
     shellcheck
     
     go
-    nodejs_18_17_1
   ];
 }

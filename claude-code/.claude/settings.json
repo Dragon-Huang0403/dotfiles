@@ -1,1 +1,29 @@
-{ "includeCoAuthoredBy": false }
+{
+  "includeCoAuthoredBy": false,
+  "permissions": {
+    "allow": [
+      "Bash(rg:*)",
+      "Bash(npm test:*)",
+      "Bash(npm run test:*)",
+      "Bash(grep:*)",
+      "Bash(node:*)",
+      "mcp__filesystem__search_files",
+      "mcp__github__search_issues",
+      "mcp__github__get_pull_request",
+      "mcp__slack-dump__dump_slack_thread",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "mcp__postgres__query",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(npx jscodeshift:*)",
+      "mcp__zen__thinkdeep",
+      "mcp__zen__chat"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "zen"
+  ],
+  "model": "opus"
+}

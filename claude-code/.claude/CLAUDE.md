@@ -83,6 +83,16 @@ When you're stuck or confused:
 
 My insights on better approaches are valued - please ask for them!
 
+### Debugging Workflow
+
+When debugging or fixing tests:
+
+1. **Add strategic logs** when you have doubts about what's happening
+2. **Run and observe** the actual behavior vs expected behavior
+3. **If still unclear, consult o3** with your current thinking and observations
+
+This methodical approach gives you concrete data about program state before seeking help with complex analysis.
+
 ## Communication Protocol
 
 ### Progress Updates:

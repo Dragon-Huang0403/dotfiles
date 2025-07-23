@@ -5,6 +5,9 @@
     atuin
     zsh-powerlevel10k
 
+    neovim
+    lunarvim
+
     devcontainer
 
     tmux

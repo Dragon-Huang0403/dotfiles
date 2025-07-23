@@ -371,7 +371,7 @@ dotfiles_echo "Creating symlinks with GNU Stow..."
 stow_package() {
   dotfiles_echo "Stowing ${1}..."
   # -v flag provides verbose output showing which symlinks are created
-  stow -v "$1"/
+  stow -v --no-folding "$1"/
 }
 for_each_stow_package stow_package
 

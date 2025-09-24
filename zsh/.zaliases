@@ -3,7 +3,7 @@
 # Quickly create + open file
 function lazyCode() {
   touch "$1"
-  cursor "$1"
+  code "$1"
 }
 
 # Get weather from wttr.in
@@ -13,9 +13,8 @@ function getWeather() {
 
 alias c="lazyCode"
 alias weather="getWeather"
-alias gcs="gh copilot suggest"
-alias gce="gh copilot explain"
 alias dive="docker run -ti --rm  -v /var/run/docker.sock:/var/run/docker.sock wagoodman/dive"
 alias cat="bat"
 alias ls="eza --icons -a"
 alias ll="eza -l --octal-permissions -a"
+alias lg="lazygit"

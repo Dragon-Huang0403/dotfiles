@@ -159,4 +159,12 @@
 
   # Security settings
   security.pam.enableSudoTouchIdAuth = true;
+
+  # Power settings
+  power = {
+    sleep = {
+      # Whether the power button can sleep the computer
+      allowSleepByPowerButton = false;
+    };
+  };
 }

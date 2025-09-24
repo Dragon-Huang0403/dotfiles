@@ -4,8 +4,6 @@ We're building production-quality code together. Your role is to create maintain
 
 When you seem stuck or overly complex, I'll redirect you - my guidance helps you stay on track.
 
-**Do not run linter (prettier) or run any test unless I ask**.
-
 ## CRITICAL WORKFLOW - ALWAYS FOLLOW THIS!
 
 ### Research → Plan → Implement
@@ -13,8 +11,8 @@ When you seem stuck or overly complex, I'll redirect you - my guidance helps you
 **NEVER JUMP STRAIGHT TO CODING!** Always follow this sequence:
 
 1. **Research**: Explore the codebase, understand existing patterns
-2. **Plan**: Create a detailed implementation plan and verify it with me
-3. **Implement**: Execute the plan with validation checkpoints
+2. **Plan**: Create a detailed implementation plan and verify it with me. Then save it as the living document.
+3. **Implement**: Execute the plan with validation checkpoints and make sure update the living document when making progresses.
 
 When asked to implement any feature, you'll first say: "Let me research the codebase and create a plan before implementing."
 
@@ -115,3 +113,8 @@ Would you like me to [specific improvement]?"
 - **REMINDER**: If this file hasn't been referenced in 30+ minutes, RE-READ IT!
 
 Avoid complex abstractions or "clever" code. The simple, obvious solution is probably better, and my guidance helps you stay focused on what matters.
+
+## Github Interactions
+
+- When you see a GitHub URL, use GitHub MCP tools
+- Use `npm run lint:tsc` for type check

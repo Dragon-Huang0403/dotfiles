@@ -1,8 +1,5 @@
 {
   "includeCoAuthoredBy": false,
-  "model": "opus",
-  "enableAllProjectMcpServers": true,
-  "enabledMcpjsonServers": ["zen"],
   "permissions": {
     "allow": [
       "Bash(rg:*)",
@@ -23,6 +20,57 @@
       "mcp__zen__thinkdeep",
       "mcp__zen__chat"
     ]
+  },
+  "model": "opus",
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "zen",
+    "github",
+    "playwright",
+    "slack-dump",
+    "postgres"
+  ],
+  "mcpServers": {
+    "zen": {
+      "type": "stdio",
+      "command": "sh -c exec /opt/homebrew/bin/uvx --from git+https://github.com/BeehiveInnovations/zen-mcp-server.git zen-mcp-server",
+      "args": [],
+      "env": {
+        "OPENAI_API_KEY": "{OPENAI_API_KEY}",
+        "GEMINI_API_KEY": "{GEMINI_API_KEY}"
+      }
+    },
+    "postgres": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://postgres:password@localhost:5432/chiffer_dump"
+      ],
+      "env": {}
+    },
+    "slack-dump": {
+      "type": "stdio",
+      "command": "/Users/dragonhunag/personal/slack-dump-mcp/slack-dump-mcp",
+      "args": [],
+      "env": {}
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "{GITHUB_PERSONAL_ACCESS_TOKEN}"
+      }
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp"]
+    },
+    "figma-dev-mode-mcp-server": {
+      "type": "http",
+      "url": "http://127.0.0.1:3845/mcp"
+    }
   },
   "hooks": {
     "PreToolUse": [
@@ -47,5 +95,9 @@
         ]
       }
     ]
-  }
+  },
+  "feedbackSurveyState": {
+    "lastShownTime": 1754274209665
+  },
+  "$schema": "https://json.schemastore.org/claude-code-settings.json"
 }

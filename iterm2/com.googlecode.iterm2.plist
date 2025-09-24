@@ -1374,7 +1374,7 @@
 				<key>action</key>
 				<string>editor</string>
 				<key>editor</key>
-				<string>com.todesktop.230313mzl4w4u92</string>
+				<string>com.microsoft.VSCode</string>
 				<key>text</key>
 				<string></string>
 			</dict>
@@ -2432,7 +2432,7 @@
 			<key>Screen</key>
 			<integer>-1</integer>
 			<key>Scrollback Lines</key>
-			<integer>1000</integer>
+			<integer>0</integer>
 			<key>Selected Text Color</key>
 			<dict>
 				<key>Alpha Component</key>
@@ -2692,6 +2692,8 @@
 	</array>
 	<key>OpenTmuxWindowsIn</key>
 	<integer>1</integer>
+	<key>PMPrintingPanelSize</key>
+	<string>{776, 520}</string>
 	<key>PointerActions</key>
 	<dict>
 		<key>Button,1,1,,</key>

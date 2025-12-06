@@ -1,0 +1,3 @@
+[submodule "claude-code/.claude/agents"]
+	path = claude-code/.claude/agents
+	url = https://github.com/contains-studio/agents.git

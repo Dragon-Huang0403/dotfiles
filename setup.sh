@@ -378,7 +378,7 @@ for_each_stow_package stow_package
 echo 
 
 # ============================================================================
-# COMPLETION
+# AUTOMATIC SHELL COMPLETIONS
 # ============================================================================
 
 dotfiles_echo "Generating shell completions..."
@@ -394,6 +394,14 @@ fi
 
 echo
 
+# ============================================================================
+# GIT SUBMODULES INITIALIZATION
+# ============================================================================
+
+dotfiles_echo "Initializing git submodules..."
+git submodule update --init --recursive
+
+echo
 
 # ============================================================================
 # COMPLETION

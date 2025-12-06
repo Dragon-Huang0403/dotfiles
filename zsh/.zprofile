@@ -45,6 +45,12 @@ path=(
   $HOME/.local/bin(N)
 )
 
+# fpath for zsh functions and completions
+fpath=(
+  $HOME/.zsh/completions
+  $fpath
+)
+
 # For golang library
 if command -v go &>/dev/null; then
   path+=("$(go env GOPATH)/bin")

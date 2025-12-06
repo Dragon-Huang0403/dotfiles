@@ -10,7 +10,7 @@
 	lgb = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches
 	root = rev-parse --show-toplevel
 [user]
-	name = Dragon Huang
+	name = Xuan Long Huang
 	email = j0918023423@gmail.com
 	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINm8BC7ZtWI34jwt7ik9ftc9tgc1QN3660Yf9jgNeqV8
 [commit]
@@ -72,3 +72,8 @@
 	all = true
 [help]
 	autocorrect = prompt
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

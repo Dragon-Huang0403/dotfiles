@@ -375,7 +375,25 @@ stow_package() {
 }
 for_each_stow_package stow_package
 
+echo 
+
+# ============================================================================
+# COMPLETION
+# ============================================================================
+
+dotfiles_echo "Generating shell completions..."
+if [ ! -d "${HOME}/.completions" ]; then
+  mkdir -p "${HOME}/.completions"
+  dotfiles_echo "Created completions directory: ${HOME}/.completions"
+fi
+
+if command -v atuin >/dev/null; then
+  atuin gen-completions --shell zsh --out-dir "${HOME}/.completions"
+  dotfiles_echo "Generated atuin zsh completions."
+fi
+
 echo
+
 
 # ============================================================================
 # COMPLETION

@@ -4,6 +4,7 @@
   environment.systemPackages = with pkgs; [
     atuin
     zsh-powerlevel10k
+    carapace
 
     neovim
     lunarvim

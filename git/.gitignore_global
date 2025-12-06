@@ -4,3 +4,6 @@ memory-bank/**/*.md
 docs/archive
 CLAUDE.local.md
 .devcontainer
+
+.claude
+.specify

@@ -97,8 +97,10 @@ source <(carapace _carapace)
 #
 [[ -r ${ZDOTDIR:-$HOME}/.zshrc_local ]] && source ${ZDOTDIR:-$HOME}/.zshrc_local
 
-# vi-mode when hit esc in insert mode
-bindkey -v
+# Set keybindings to emacs mode.
+# Matching behavior of most other shells.
+# https://effective-shell.com/part-2-core-skills/fly-on-the-command-line
+bindkey -e
 
 # Finish profiling by calling zprof.
 [[ "$ZPROFRC" -eq 1 ]] && zprof

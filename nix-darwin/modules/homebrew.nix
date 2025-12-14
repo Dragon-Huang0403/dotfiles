@@ -10,11 +10,11 @@
     "stats"
     "google-chrome"
     "shottr"
-    "switchkey"
     "tomatobar"
     "orbstack"
     "devtoys"
     "1password-cli"
+    "hammerspoon"
   ];
   
   homebrew.brews = [ ];

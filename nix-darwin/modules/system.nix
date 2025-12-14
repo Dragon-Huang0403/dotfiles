@@ -155,6 +155,13 @@
     # Disable Notification Center and remove the menu bar icon
     # Commented out as this might be too aggressive
     # menuExtraClock.IsAnalog = false;
+    
+    
+    CustomUserPreferences = {
+      "org.hammerspoon.Hammerspoon" = {
+        MJConfigFile = "~/.config/hammerspoon/init.lua";
+      };
+    };
   };
 
   # Security settings

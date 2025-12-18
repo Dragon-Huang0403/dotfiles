@@ -97,6 +97,11 @@ source <(carapace _carapace)
 #
 [[ -r ${ZDOTDIR:-$HOME}/.zshrc_local ]] && source ${ZDOTDIR:-$HOME}/.zshrc_local
 
+#
+# Secrets (lazy-loaded with Touch ID via 1Password)
+#
+[[ -r ${ZDOTDIR:-$HOME}/.zsecrets ]] && source ${ZDOTDIR:-$HOME}/.zsecrets
+
 # Set keybindings to emacs mode.
 # Matching behavior of most other shells.
 # https://effective-shell.com/part-2-core-skills/fly-on-the-command-line

@@ -118,3 +118,5 @@ Avoid complex abstractions or "clever" code. The simple, obvious solution is pro
 
 - When you see a GitHub URL, use GitHub MCP tools
 - Use `npm run lint:tsc` for type check
+- When code reviewing, don't need to check tests and linters since it will be done by CI.
+- Don't need to check eslint, I will always handle eslint error.

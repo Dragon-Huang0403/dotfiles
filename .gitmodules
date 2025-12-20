@@ -1,3 +1,15 @@
 [submodule "claude-code/.claude/agents"]
 	path = claude-code/.claude/agents
 	url = https://github.com/contains-studio/agents.git
+[submodule "tmux/plugins/tpm"]
+	path = tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm.git
+[submodule "tmux/.config/tmux/plugins/tpm"]
+	path = tmux/.config/tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm.git
+[submodule "tmux/tmux/.config/tmux/plugins/catppuccin/tmux"]
+	path = tmux/tmux/.config/tmux/plugins/catppuccin/tmux
+	url = https://github.com/catppuccin/tmux.git
+[submodule "tmux/.config/tmux/plugins/catppuccin/tmux"]
+	path = tmux/.config/tmux/plugins/catppuccin/tmux
+	url = https://github.com/catppuccin/tmux.git

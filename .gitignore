@@ -2,3 +2,4 @@ backup
 .zshrc_local
 
 .DS_Store
+.claude

@@ -7,7 +7,6 @@
     carapace
 
     neovim
-    lunarvim
 
     devcontainer
 

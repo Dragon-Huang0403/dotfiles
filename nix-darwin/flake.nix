@@ -3,16 +3,23 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
+    # Pinned to neovim 0.11.2
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/a421ac6595024edcfbb1ef950a3712b89161c359";
     nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-24.11";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs }:
+  outputs = inputs@{ self, nix-darwin, nixpkgs, nixpkgs-unstable }:
   let
     # Function to create a darwin system for a specific host
     mkDarwinSystem = hostname: nix-darwin.lib.darwinSystem {
       modules = [ ./hosts/${hostname}.nix ];
-      specialArgs = { inherit self; };
+      specialArgs = {
+        inherit self;
+        pkgs-unstable = import nixpkgs-unstable {
+          system = "aarch64-darwin";
+        };
+      };
     };
   in {
     # Define configurations for each host

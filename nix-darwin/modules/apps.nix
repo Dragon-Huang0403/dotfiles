@@ -7,6 +7,8 @@
     carapace
 
     neovim
+    fd
+    tree-sitter
 
     devcontainer
 

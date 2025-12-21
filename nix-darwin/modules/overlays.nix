@@ -2,11 +2,6 @@
 
 {
   nixpkgs.overlays = [
-    # Use neovim from unstable channel
-    (final: prev: {
-      neovim = pkgs-unstable.neovim;
-    })
-
     (final: prev: {
       nodejs_18_17_1 = prev.stdenv.mkDerivation {
         pname   = "nodejs";

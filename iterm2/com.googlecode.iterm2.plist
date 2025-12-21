@@ -1045,6 +1045,8 @@
 	</dict>
 	<key>Default Bookmark Guid</key>
 	<string>D92DB4DB-FDDD-487C-8DDB-70CFC1D0BE51</string>
+	<key>DefaultTabBarHeight</key>
+	<real>28</real>
 	<key>EnableAPIServer</key>
 	<true/>
 	<key>GlobalKeyMap</key>
@@ -1210,6 +1212,8 @@
 			<string></string>
 			<key>AWDS Window Option</key>
 			<string>No</string>
+			<key>Allow Title Setting</key>
+			<true/>
 			<key>Ambiguous Double Width</key>
 			<false/>
 			<key>Ansi 0 Color</key>
@@ -1976,7 +1980,7 @@
 			<key>Columns</key>
 			<integer>150</integer>
 			<key>Command</key>
-			<string></string>
+			<string>/run/current-system/sw/bin/tmux</string>
 			<key>Cursor Boost (Dark)</key>
 			<real>0.0</real>
 			<key>Cursor Boost (Light)</key>
@@ -2101,7 +2105,7 @@
 			<key>Cursor Type</key>
 			<integer>2</integer>
 			<key>Custom Command</key>
-			<string>No</string>
+			<string>Yes</string>
 			<key>Custom Directory</key>
 			<string>Recycle</string>
 			<key>Custom Locale</key>
@@ -2163,8 +2167,12 @@
 			<string>D92DB4DB-FDDD-487C-8DDB-70CFC1D0BE51</string>
 			<key>Horizontal Spacing</key>
 			<real>1</real>
+			<key>Icon</key>
+			<integer>0</integer>
 			<key>Idle Code</key>
 			<integer>0</integer>
+			<key>Initial Text</key>
+			<string></string>
 			<key>Jobs to Ignore</key>
 			<array>
 				<string>rlogin</string>
@@ -2607,12 +2615,16 @@
 					</dict>
 				</array>
 			</dict>
+			<key>Subtitle</key>
+			<string></string>
 			<key>Sync Title</key>
 			<false/>
 			<key>Tags</key>
 			<array/>
 			<key>Terminal Type</key>
 			<string>xterm-256color</string>
+			<key>Title Components</key>
+			<integer>517</integer>
 			<key>Transparency</key>
 			<real>0.0</real>
 			<key>Unlimited Scrollback</key>
@@ -3795,9 +3807,17 @@
 	<key>Print In Black And White</key>
 	<true/>
 	<key>ShowFullScreenTabBar</key>
-	<true/>
+	<false/>
 	<key>SoundForEsc</key>
 	<false/>
+	<key>TmuxSyncClipboard</key>
+	<true/>
+	<key>TmuxUnpauseAutomatically</key>
+	<false/>
+	<key>TmuxWarnBeforePausing</key>
+	<true/>
+	<key>UseTmuxStatusBar</key>
+	<true/>
 	<key>VisualIndicatorForEsc</key>
 	<false/>
 	<key>findMode_iTerm</key>

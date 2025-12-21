@@ -164,8 +164,11 @@
     };
   };
 
-  # Security settings
-  security.pam.enableSudoTouchIdAuth = true;
+  # Security settings - Touch ID for sudo (reattach fixes Touch ID in tmux/screen)
+  security.pam.services.sudo_local = {
+    touchIdAuth = true;
+    reattach = true;
+  };
 
   # Power settings
   power = {

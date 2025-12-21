@@ -8,7 +8,10 @@
 
   # Host-specific settings for Subscript
   networking.hostName = "Subscript";
-  
+
+  # Primary user for user-specific options (homebrew, dock, finder, etc.)
+  system.primaryUser = "dragonhunag";
+
   # User-specific settings
   users.users.dragonhunag = {
     home = "/Users/dragonhunag";

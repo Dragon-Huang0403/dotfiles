@@ -12,7 +12,6 @@
 
   # Nix settings
   nix.settings.experimental-features = "nix-command flakes";
-  nix.useDaemon = true;
   nix.enable = false;
 
   # Used for backwards compatibility

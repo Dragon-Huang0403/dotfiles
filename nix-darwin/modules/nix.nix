@@ -5,7 +5,6 @@
   nix.settings.experimental-features = "nix-command flakes";
 
   # Nix daemon configuration
-  nix.useDaemon = true;
   nix.enable = false;
 
   # Set Git commit hash for darwin-version.

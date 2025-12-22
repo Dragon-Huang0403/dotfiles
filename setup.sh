@@ -370,8 +370,9 @@ dotfiles_echo "Creating symlinks with GNU Stow..."
 #   $1 - Package directory name to stow
 stow_package() {
   dotfiles_echo "Stowing ${1}..."
-  # -v flag provides verbose output showing which symlinks are created
-  stow -v --no-folding "$1"/
+  # -R (restow) = unstow + stow, removes symlinks for deleted files
+  # -v flag provides verbose output showing which symlinks are created/removed
+  stow -R -v --no-folding "$1"/
 }
 for_each_stow_package stow_package
 

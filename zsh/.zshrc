@@ -32,11 +32,6 @@ alias zprofrc="ZPROFRC=1 zsh"
 # source $ZDOTDIR/.antidote/antidote.zsh
 # antidote load
 
-# 
-# Local settings/overrides.
-# 
-# [[ -f $ZDOTDIR/.zshrc_local ]] && $ZDOTDIR/.zshrc_local
-
 
 # 
 # Oh My Zsh
@@ -91,6 +86,11 @@ export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
 zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
 zstyle ':completion:*:git:*' group-order 'main commands' 'alias commands' 'external commands'
 source <(carapace _carapace)
+
+# 
+# direnv, per-directory environment variables
+#
+eval "$(direnv hook zsh)"
 
 #
 # Local zshrc

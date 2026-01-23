@@ -15,6 +15,8 @@
     tmux
     tmuxinator
 
+    direnv
+
     eza # ls replacement
 
     lazygit

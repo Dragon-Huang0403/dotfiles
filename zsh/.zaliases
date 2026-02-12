@@ -20,3 +20,7 @@ alias ll="eza -l --octal-permissions -a"
 alias lg="lazygit"
 alias python="python3"
 alias pip="pip3"
+
+function cc(){
+  load_secrets && claude "$@"
+}

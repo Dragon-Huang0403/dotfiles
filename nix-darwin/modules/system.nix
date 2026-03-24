@@ -179,6 +179,10 @@
       "org.hammerspoon.Hammerspoon" = {
         MJConfigFile = "~/.config/hammerspoon/init.lua";
       };
+      "com.googlecode.iterm2" = {
+        PreferencesFolder = "~/dotfiles/iterm2";
+        LoadPrefsFromCustomFolder = true;
+      };
     };
   };
 

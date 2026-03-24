@@ -67,6 +67,9 @@
         "/Applications/WhatsApp.app"
       ];
       
+      # No folder stacks (e.g. remove Downloads)
+      persistent-others = [ ];
+
       # Make Dock icons of hidden applications translucent
       showhidden = true;
       

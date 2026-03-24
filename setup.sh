@@ -55,6 +55,9 @@ set -o pipefail
 # Enable debug mode with: DEBUG=1 ./setup.sh
 [[ "${DEBUG:-0}" == "1" ]] && set -o xtrace
 
+# Print the line number and failed command on unexpected exit
+trap 'echo "[DOTFILES] ERROR: Script failed at line ${LINENO}: ${BASH_COMMAND}" >&2' ERR
+
 # ============================================================================
 # HELPER FUNCTIONS
 # ============================================================================
@@ -301,7 +304,7 @@ fi
 
 # Check if Nix is installed and run Darwin configuration if available
 # This step is optional - the script will work without Nix
-HAS_NIX_INSTALLED=$(command -v nix)
+HAS_NIX_INSTALLED=$(command -v nix || true)
 readonly HAS_NIX_INSTALLED
 if [ -n "$HAS_NIX_INSTALLED" ]; then
   darwin_rebuild
@@ -423,6 +426,9 @@ if [[ -z "$HAS_NIX_INSTALLED" ]]; then
 fi
 if ! command -v op >/dev/null; then
   echo "-> Set up 1Password CLI (https://developer.1password.com/docs/cli)"
+fi
+if ! command -v brew >/dev/null; then
+  echo "-> Install Home Brew (https://brew.sh/)"
 fi
 echo "-> Restart your terminal to apply shell configuration"
 echo "-> Review backed up files in: ${DOTFILES}/backup/"

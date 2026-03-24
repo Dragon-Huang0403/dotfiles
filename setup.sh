@@ -417,6 +417,17 @@ fi
 echo
 
 # ============================================================================
+# ITERM2 PREFERENCES
+# ============================================================================
+
+dotfiles_echo "Configuring iTerm2 preferences folder..."
+defaults write com.googlecode.iterm2 PreferencesFolder "${DOTFILES}/iterm2"
+defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
+dotfiles_echo "iTerm2 will load preferences from: %s" "${DOTFILES}/iterm2"
+
+echo
+
+# ============================================================================
 # AUTOMATIC SHELL COMPLETIONS
 # ============================================================================
 

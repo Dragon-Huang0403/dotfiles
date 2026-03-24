@@ -434,6 +434,39 @@ fi
 echo
 
 # ============================================================================
+# OH MY ZSH + PLUGINS
+# ============================================================================
+
+dotfiles_echo "Setting up Oh My Zsh..."
+
+if [ ! -d "${HOME}/.oh-my-zsh" ]; then
+  dotfiles_echo "Installing Oh My Zsh..."
+  RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+else
+  dotfiles_echo "Oh My Zsh already installed. Skipping."
+fi
+
+ZSH_CUSTOM="${HOME}/.oh-my-zsh/custom/plugins"
+
+clone_or_update_plugin() {
+  local name="$1"
+  local repo="$2"
+  if [ ! -d "${ZSH_CUSTOM}/${name}" ]; then
+    dotfiles_echo "Installing plugin: %s" "$name"
+    git clone --depth=1 "$repo" "${ZSH_CUSTOM}/${name}"
+  else
+    dotfiles_echo "Plugin already installed: %s. Skipping." "$name"
+  fi
+}
+
+clone_or_update_plugin "zsh-autosuggestions"   "https://github.com/zsh-users/zsh-autosuggestions"
+clone_or_update_plugin "zsh-syntax-highlighting" "https://github.com/zsh-users/zsh-syntax-highlighting"
+clone_or_update_plugin "fzf-tab"               "https://github.com/Aloxaf/fzf-tab"
+clone_or_update_plugin "zsh-nvm"               "https://github.com/lukechilds/zsh-nvm"
+
+echo
+
+# ============================================================================
 # GIT SUBMODULES INITIALIZATION
 # ============================================================================
 

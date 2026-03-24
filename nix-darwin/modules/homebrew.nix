@@ -30,6 +30,7 @@
     "openjpeg"
     "openvino"
     "pipx"
+    "powerlevel10k"
     "prettier"
     "stow"
     "tesseract"
@@ -42,6 +43,7 @@
   ];
 
   homebrew.casks = [
+    "1password"
     "1password-cli"
     "alt-tab"
     "chatgpt"

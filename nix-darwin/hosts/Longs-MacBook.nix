@@ -17,11 +17,6 @@
     home = "/Users/xuanlong";
   };
 
-  # Machine-specific Finder settings
-  system.defaults.finder = {
-    NewWindowTarget = "Downloads";
-  };
-
   system.defaults.screencapture.location = "/Users/xuanlong/Screenshots";
 
   # The platform the configuration will be used on

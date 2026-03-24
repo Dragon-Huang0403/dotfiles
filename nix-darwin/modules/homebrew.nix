@@ -6,8 +6,6 @@
 
   homebrew.taps = [
     "heroku/brew"
-    "homebrew/bundle"
-    "homebrew/services"
   ];
 
   homebrew.brews = [

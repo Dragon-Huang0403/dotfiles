@@ -279,7 +279,7 @@ echo
 # Setup XDG config directory
 # XDG Base Directory Specification defines where user config files should go
 # Many modern CLI tools expect ~/.config to exist and use it for their configs
-if [ -z "$XDG_CONFIG_HOME" ]; then
+if [ -z "${XDG_CONFIG_HOME:-}" ]; then
   dotfiles_echo "Setting up XDG_CONFIG_HOME..."
   if [ ! -d "${HOME}/.config" ]; then
     mkdir -p "${HOME}/.config"

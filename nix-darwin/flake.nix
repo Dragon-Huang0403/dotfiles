@@ -19,15 +19,9 @@
     darwinConfigurations = {
       # Build with: darwin-rebuild build --flake .#Subscript
       "Subscript" = mkDarwinSystem "Subscript";
-      
-      # Build with: darwin-rebuild build --flake .#WorkMac
-      "WorkMac" = mkDarwinSystem "WorkMac";
-      
-      # Add more hosts as needed:
-      # "MacBookPro" = mkDarwinSystem "MacBookPro";
-    };
 
-    # Optional: Set a default configuration
-    darwinPackages = self.darwinConfigurations."Subscript".pkgs;
+      # Build with: darwin-rebuild build --flake .#Longs-MacBook
+      "Longs-MacBook" = mkDarwinSystem "Longs-MacBook";
+    };
   };
 }

@@ -23,7 +23,38 @@
 
     codespell
     shellcheck
-    
+
     go
+
+    # Python tooling
+    uv
+
+    # Cloud / infra
+    awscli2
+    kubectl
+    kubernetes-helm
+    eksctl
+
+    # Security
+    gitleaks
+
+    # CLI tools
+    bat
+    fzf
+    gh
+    git-delta
+    glow
+    htop
+    jq
+    jless
+    pre-commit
+    ripgrep
+    tree
+    yamllint
+    zoxide
+
+    # Utilities
+    wget
+    cloc
   ];
 }

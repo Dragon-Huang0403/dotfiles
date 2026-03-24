@@ -187,14 +187,23 @@ darwin_rebuild() {
   dotfiles_echo "Nix is installed. Running Nix Darwin Flake..."
   echo
 
+  # Detect host configuration name from hostname, fallback to Longs-MacBook
+  local host_name
+  host_name=$(scutil --get LocalHostName)
+  if [ ! -f "${DOTFILES}/nix-darwin/hosts/${host_name}.nix" ]; then
+    dotfiles_echo "No host config found for '%s', defaulting to Longs-MacBook" "$host_name"
+    host_name="Longs-MacBook"
+  fi
+  dotfiles_echo "Using Nix Darwin configuration: %s" "$host_name"
+
   if ! command -v darwin-rebuild >/dev/null; then
     dotfiles_echo "Nix Darwin is not installed. Installing..."
     # Initial installation requires nix run to bootstrap darwin-rebuild
-    nix run nix-darwin/nix-darwin-24.11#darwin-rebuild -- switch --flake ~/dotfiles/nix-darwin#Subscript
+    nix run nix-darwin/nix-darwin-24.11#darwin-rebuild -- switch --flake ~/dotfiles/nix-darwin#"$host_name"
     dotfiles_echo "Nix Darwin Flake installed."
-  else 
+  else
     # Subsequent runs can use the installed darwin-rebuild command
-    sudo darwin-rebuild switch --flake ~/dotfiles/nix-darwin#Subscript
+    sudo darwin-rebuild switch --flake ~/dotfiles/nix-darwin#"$host_name"
     dotfiles_echo "Nix Darwin Flake switched."
   fi
 }
@@ -363,6 +372,8 @@ readonly -a STOW_IGNORE_DIRECTORIES=(
   "nix-darwin"  # Nix Darwin configuration (handled by darwin_rebuild)
   ".vscode"
   "raycast_scripts"
+  "ice"         # Ice menu bar manager (handled conditionally below)
+  "stats"       # Stats menu bar monitor (handled conditionally below)
 )
 
 # Check for conflicts before stowing
@@ -385,7 +396,23 @@ stow_package() {
 }
 for_each_stow_package stow_package
 
-echo 
+# Stow Ice menu bar manager config only if Ice.app is installed
+if [ -d "/Applications/Ice.app" ]; then
+  dotfiles_echo "Ice.app detected. Stowing Ice configuration..."
+  stow_package "ice"
+else
+  dotfiles_echo "Ice.app not installed. Skipping Ice configuration..."
+fi
+
+# Stow Stats menu bar monitor config only if Stats.app is installed
+if [ -d "/Applications/Stats.app" ]; then
+  dotfiles_echo "Stats.app detected. Stowing Stats configuration..."
+  stow_package "stats"
+else
+  dotfiles_echo "Stats.app not installed. Skipping Stats configuration..."
+fi
+
+echo
 
 # ============================================================================
 # AUTOMATIC SHELL COMPLETIONS
@@ -422,13 +449,18 @@ dotfiles_echo "Dotfiles setup complete!"
 echo
 echo "Possible next steps:"
 if [[ -z "$HAS_NIX_INSTALLED" ]]; then
-  echo "-> Install Nix (https://github.com/DeterminateSystems/nix-installer)"
+  echo "-> Install Nix (https://github.com/DeterminateSystems/nix-installer):"
+  echo "   curl -fsSL https://install.determinate.systems/nix | sh -s -- install"
 fi
 if ! command -v op >/dev/null; then
   echo "-> Set up 1Password CLI (https://developer.1password.com/docs/cli)"
 fi
 if ! command -v brew >/dev/null; then
-  echo "-> Install Home Brew (https://brew.sh/)"
+  echo "-> Install Homebrew (https://brew.sh/):"
+  echo "   /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+else
+  echo "-> Install Homebrew packages:"
+  echo "   brew bundle --file=${DOTFILES}/Brewfile"
 fi
 echo "-> Restart your terminal to apply shell configuration"
 echo "-> Review backed up files in: ${DOTFILES}/backup/"

@@ -22,7 +22,7 @@
     NewWindowTarget = "Downloads";
   };
 
-  system.defaults.screencapture.location = "/Users/xuanlong/Screenshots"
+  system.defaults.screencapture.location = "/Users/xuanlong/Screenshots";
 
   # The platform the configuration will be used on
   nixpkgs.hostPlatform = "aarch64-darwin";

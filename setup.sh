@@ -417,6 +417,18 @@ fi
 echo
 
 # ============================================================================
+# ITERM2 PREFERENCES
+# ============================================================================
+
+dotfiles_echo "Configuring iTerm2 preferences folder..."
+chmod 644 "${DOTFILES}/iterm2/com.googlecode.iterm2.plist"
+defaults write com.googlecode.iterm2 PrefsCustomFolder "${DOTFILES}/iterm2"
+defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
+dotfiles_echo "iTerm2 will load preferences from: %s" "${DOTFILES}/iterm2"
+
+echo
+
+# ============================================================================
 # AUTOMATIC SHELL COMPLETIONS
 # ============================================================================
 
@@ -458,6 +470,27 @@ clone_or_update_plugin() {
     dotfiles_echo "Plugin already installed: %s. Skipping." "$name"
   fi
 }
+
+# Install MesloLGS NF fonts required by Powerlevel10k
+# These are patched fonts with icons/glyphs - different from standard nerd fonts
+dotfiles_echo "Installing MesloLGS NF fonts for Powerlevel10k..."
+FONTS_DIR="${HOME}/Library/Fonts"
+mkdir -p "$FONTS_DIR"
+declare -A P10K_FONTS=(
+  ["MesloLGS NF Regular.ttf"]="MesloLGS%20NF%20Regular.ttf"
+  ["MesloLGS NF Bold.ttf"]="MesloLGS%20NF%20Bold.ttf"
+  ["MesloLGS NF Italic.ttf"]="MesloLGS%20NF%20Italic.ttf"
+  ["MesloLGS NF Bold Italic.ttf"]="MesloLGS%20NF%20Bold%20Italic.ttf"
+)
+for font_name in "${!P10K_FONTS[@]}"; do
+  if [ ! -f "${FONTS_DIR}/${font_name}" ]; then
+    dotfiles_echo "Downloading: %s" "$font_name"
+    curl -fsSL "https://github.com/romkatv/powerlevel10k-media/raw/master/${P10K_FONTS[$font_name]}" \
+      -o "${FONTS_DIR}/${font_name}"
+  else
+    dotfiles_echo "Font already installed: %s. Skipping." "$font_name"
+  fi
+done
 
 # Symlink powerlevel10k from brew into OMZ custom themes
 ZSH_CUSTOM_THEMES="${HOME}/.oh-my-zsh/custom/themes"

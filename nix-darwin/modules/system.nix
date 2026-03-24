@@ -179,6 +179,18 @@
       "org.hammerspoon.Hammerspoon" = {
         MJConfigFile = "~/.config/hammerspoon/init.lua";
       };
+      "com.apple.symbolichotkeys" = {
+        AppleSymbolicHotKeys = {
+          # Screenshots - all disabled (using Shottr instead)
+          "28" = { enabled = 0; };  # Save picture of screen as file (⇧⌘3)
+          "29" = { enabled = 0; };  # Copy picture of screen to clipboard (^⇧⌘3)
+          "30" = { enabled = 0; };  # Save picture of selected area as file (⇧⌘4)
+          "31" = { enabled = 0; };  # Copy picture of selected area to clipboard (^⇧⌘4)
+          # Spotlight - disabled so Raycast can use ⌘Space
+          "64" = { enabled = 0; };  # Show Spotlight search (⌘Space)
+          "65" = { enabled = 0; };  # Show Finder search window (⌥⌘Space)
+        };
+      };
     };
   };
 

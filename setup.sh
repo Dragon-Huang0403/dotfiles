@@ -48,6 +48,12 @@
 # Exit immediately if any command exits with a non-zero status
 # This ensures the script stops on the first error
 set -e
+set -o errexit
+set -o errtrace
+set -o nounset
+set -o pipefail
+# Enable debug mode with: DEBUG=1 ./setup.sh
+[[ "${DEBUG:-0}" == "1" ]] && set -o xtrace
 
 # ============================================================================
 # HELPER FUNCTIONS
@@ -225,7 +231,7 @@ sudo -v
 
 # Set DOTFILES directory if not already set
 # This allows users to override the default location by setting DOTFILES env var
-if [ -z "$DOTFILES" ]; then
+if [ -z "${DOTFILES:-}" ]; then
   export DOTFILES="${HOME}/dotfiles"
 fi
 

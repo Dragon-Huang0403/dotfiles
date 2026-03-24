@@ -459,6 +459,16 @@ clone_or_update_plugin() {
   fi
 }
 
+# Symlink powerlevel10k from brew into OMZ custom themes
+ZSH_CUSTOM_THEMES="${HOME}/.oh-my-zsh/custom/themes"
+mkdir -p "$ZSH_CUSTOM_THEMES"
+if [ ! -e "${ZSH_CUSTOM_THEMES}/powerlevel10k" ]; then
+  dotfiles_echo "Linking powerlevel10k theme from brew..."
+  ln -sf "$(brew --prefix)/share/powerlevel10k" "${ZSH_CUSTOM_THEMES}/powerlevel10k"
+else
+  dotfiles_echo "powerlevel10k theme already linked. Skipping."
+fi
+
 clone_or_update_plugin "zsh-autosuggestions"   "https://github.com/zsh-users/zsh-autosuggestions"
 clone_or_update_plugin "zsh-syntax-highlighting" "https://github.com/zsh-users/zsh-syntax-highlighting"
 clone_or_update_plugin "fzf-tab"               "https://github.com/Aloxaf/fzf-tab"

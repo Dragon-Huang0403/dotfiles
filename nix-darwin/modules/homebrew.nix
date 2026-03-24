@@ -63,7 +63,7 @@
     "postico"
     "postman"
     "proxyman"
-    { name = "raycast"; args = { require_sha = false; }; }
+    "raycast"
     "shottr"
     "sioyek"
     "skim"
@@ -73,7 +73,7 @@
     "tomatobar"
     "visual-studio-code"
     "whatsapp"
-    "wireshark"
+    "wireshark-app"
     "zoom"
   ];
 }

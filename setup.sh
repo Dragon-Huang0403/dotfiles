@@ -460,9 +460,6 @@ fi
 if ! command -v brew >/dev/null; then
   echo "-> Install Homebrew (https://brew.sh/):"
   echo "   /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
-else
-  echo "-> Install Homebrew packages:"
-  echo "   brew bundle --file=${DOTFILES}/Brewfile"
 fi
 echo "-> Restart your terminal to apply shell configuration"
 echo "-> Review backed up files in: ${DOTFILES}/backup/"

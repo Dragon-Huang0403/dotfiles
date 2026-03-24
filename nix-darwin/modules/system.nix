@@ -51,6 +51,21 @@
       
       # Don't show recent applications in Dock
       show-recents = false;
+
+      # Persistent apps in Dock
+      persistent-apps = [
+        "/System/Applications/Apps.app"
+        "/Applications/Spotify.app"
+        "/Applications/Google Chrome.app"
+        "/System/Applications/Calendar.app"
+        "/Applications/iTerm.app"
+        "/Applications/ChatGPT.app"
+        "/Applications/Claude.app"
+        "/Applications/Heptabase.app"
+        "/Applications/Visual Studio Code.app"
+        "/Applications/LINE.app"
+        "/Applications/WhatsApp.app"
+      ];
       
       # Make Dock icons of hidden applications translucent
       showhidden = true;

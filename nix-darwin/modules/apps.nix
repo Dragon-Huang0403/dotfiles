@@ -42,7 +42,7 @@
     bat
     fzf
     gh
-    git-delta
+    delta
     glow
     htop
     jq

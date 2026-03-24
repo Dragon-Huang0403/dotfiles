@@ -6,8 +6,8 @@
     (import ../modules/nix.nix { inherit self; })
   ];
 
-  # Host-specific settings for Long's MacBook Pro
-  networking.hostName = "Longs-MacBook-Pro";
+  # Host-specific settings for Long's MacBook
+  networking.hostName = "Longs-MacBook";
 
   # Primary user for user-specific options (homebrew, dock, finder, etc.)
   system.primaryUser = "xuanlong";

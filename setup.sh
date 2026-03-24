@@ -399,6 +399,7 @@ for_each_stow_package stow_package
 # Stow Ice menu bar manager config only if Ice.app is installed
 if [ -d "/Applications/Ice.app" ]; then
   dotfiles_echo "Ice.app detected. Stowing Ice configuration..."
+  check_conflicts_for_package "ice"
   stow_package "ice"
 else
   dotfiles_echo "Ice.app not installed. Skipping Ice configuration..."
@@ -407,6 +408,7 @@ fi
 # Stow Stats menu bar monitor config only if Stats.app is installed
 if [ -d "/Applications/Stats.app" ]; then
   dotfiles_echo "Stats.app detected. Stowing Stats configuration..."
+  check_conflicts_for_package "stats"
   stow_package "stats"
 else
   dotfiles_echo "Stats.app not installed. Skipping Stats configuration..."

@@ -221,6 +221,14 @@
         "KeyboardShortcuts_fullscreen" = ''{"carbonKeyCode":21,"carbonModifiers":768}'';
         "KeyboardShortcuts_ocr"        = ''{"carbonModifiers":6400,"carbonKeyCode":31}'';
       };
+      "com.apple.Spotlight" = {
+        # Hide Spotlight icon from menu bar
+        MenuItemHidden = 1;
+      };
+      "com.apple.controlcenter" = {
+        # Hide Battery from menu bar (show in Control Center only)
+        Battery = 8;
+      };
       "com.apple.symbolichotkeys" = {
         AppleSymbolicHotKeys = {
           # Screenshots - all disabled (using Shottr instead)

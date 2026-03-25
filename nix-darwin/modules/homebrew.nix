@@ -57,7 +57,6 @@
     "hammerspoon"
     "heptabase"
     "iterm2"
-    "jordanbaird-ice"
     "mitmproxy"
     "ngrok"
     "nordvpn"

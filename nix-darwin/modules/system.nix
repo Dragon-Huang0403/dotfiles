@@ -119,7 +119,9 @@
     trackpad = {};
     
     # NSGlobalDomain - General UI/UX settings
-    NSGlobalDomain = { };
+    NSGlobalDomain = {
+      AppleInterfaceStyle = "Dark";
+    };
     
     # Screenshot settings
     screencapture = {

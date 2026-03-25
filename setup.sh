@@ -372,7 +372,6 @@ readonly -a STOW_IGNORE_DIRECTORIES=(
   "nix-darwin"  # Nix Darwin configuration (handled by darwin_rebuild)
   ".vscode"
   "raycast_scripts"
-  "ice"         # Ice menu bar manager (handled conditionally below)
   "stats"       # Stats menu bar monitor (handled conditionally below)
 )
 
@@ -395,15 +394,6 @@ stow_package() {
   stow -R -v --no-folding "$1"/
 }
 for_each_stow_package stow_package
-
-# Stow Ice menu bar manager config only if Ice.app is installed
-if [ -d "/Applications/Ice.app" ]; then
-  dotfiles_echo "Ice.app detected. Stowing Ice configuration..."
-  check_conflicts_for_package "ice"
-  stow_package "ice"
-else
-  dotfiles_echo "Ice.app not installed. Skipping Ice configuration..."
-fi
 
 # Stow Stats menu bar monitor config only if Stats.app is installed
 if [ -d "/Applications/Stats.app" ]; then

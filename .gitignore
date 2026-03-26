@@ -2,4 +2,4 @@ backup
 .zshrc_local
 
 .DS_Store
-.claude
+anthropic_key.sh

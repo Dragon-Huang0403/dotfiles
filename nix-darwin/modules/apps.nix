@@ -24,10 +24,14 @@
     codespell
     shellcheck
 
+    # Golang
     go
 
     # Python tooling
     uv
+
+    # Java
+    jdk
 
     # Cloud / infra
     awscli2

@@ -34,6 +34,7 @@ typeset -gU path fpath cdpath mailpath
 # )
 
 # Set the list of directories that zsh searches for commands in order.
+# PATH=
 path=(
   $HOME/.nix-profile/bin             # nix-user packages
   /run/current-system/sw/bin         # nix-darwin system profile
@@ -43,6 +44,10 @@ path=(
   $HOME/{,s}bin(N)
   /usr/local/{,s}bin(N)
   $HOME/.local/bin(N)
+  $HOME/Library/Android/sdk/platform-tools
+  $HOME/Library/Android/sdk/emulator
+  $HOME/flutter/flutter/bin
+  $HOME/.pub-cache/bin
 )
 
 # fpath for zsh functions and completions

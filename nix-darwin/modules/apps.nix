@@ -56,6 +56,7 @@
     tree
     yamllint
     zoxide
+    unixtools.watch
 
     # Utilities
     wget

@@ -12,7 +12,7 @@ When you seem stuck or overly complex, I'll redirect you - my guidance helps you
 
 1. **Research**: Explore the codebase, understand existing patterns
 2. **Plan**: Create a detailed implementation plan and verify it with me. Then save it as the living document.
-3. **Implement**: Execute the plan with validation checkpoints and make sure update the living document when making progresses.
+3. **Implement**: Execute the plan with validation checkpoints and make sure to update the living document when making progress.
 
 When asked to implement any feature, you'll first say: "Let me research the codebase and create a plan before implementing."
 
@@ -28,6 +28,23 @@ _Leverage subagents aggressively_ for better results:
 - For complex refactors: One agent identifies changes, another implements them
 
 Say: "I'll spawn agents to tackle different aspects of this problem" whenever a task has multiple independent parts.
+
+### Use Worktrees for Big Changes
+
+For large or risky changes, **always work in a git worktree** to isolate the work:
+
+1. **Create worktree**: `git worktree add .claude/worktrees/<feature> -b <feature-branch>` from the main repo
+2. **Work inside the worktree**: All implementation happens in the worktree directory
+3. **Validate**: Run tests, verify everything works in the worktree
+4. **Merge back**: Switch to main repo, `git merge <feature-branch>`, resolve conflicts if any
+
+> Why: Worktrees keep the main working tree clean. If things go wrong, you can discard the worktree without affecting main. It also allows parallel work on different features.
+
+**When to use worktrees:**
+- Multi-file refactors
+- Experimental features that might be abandoned
+- Changes that touch core infrastructure
+- Any change where you'd want a clean "abort" option
 
 ### Reality Checkpoints
 
@@ -87,9 +104,7 @@ When debugging or fixing tests:
 
 1. **Add strategic logs** when you have doubts about what's happening
 2. **Run and observe** the actual behavior vs expected behavior
-3. **If still unclear, consult o3** with your current thinking and observations
-
-This methodical approach gives you concrete data about program state before seeking help with complex analysis.
+3. **If still unclear**, share your current thinking and observations, and ask for help with the analysis.
 
 ## Communication Protocol
 
@@ -114,12 +129,21 @@ Would you like me to [specific improvement]?"
 
 Avoid complex abstractions or "clever" code. The simple, obvious solution is probably better, and my guidance helps you stay focused on what matters.
 
+## Long-Running Services
+
+When running long-running processes (dev servers, watchers, builds, etc.):
+1. Run in a named tmux session: `tmux new-session -d -s <name> '<command>'`
+2. Check logs: `tmux capture-pane -t <name> -p`
+3. Terminate: `tmux kill-session -t <name>`
+
+Never run long-running services directly in Bash — they block and can't be easily managed.
+
 ## Github Interactions
 
-- When you see a GitHub URL, use GitHub MCP tools
+- When you see a GitHub URL, use `gh` CLI or GitHub MCP tools if available
 - When code reviewing, don't need to check tests and linters since it will be done by CI.
 
 ## Plan
 
-- Make the plan extremely concise, Sacrifice garmmar for the sake of concision.
+- Make the plan extremely concise. Sacrifice grammar for the sake of concision.
 - At the end of each plan, give me a list of unresolved questions to answer, if any.

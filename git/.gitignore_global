@@ -2,6 +2,7 @@
 .cursor
 memory-bank/**/*.md
 docs/archive
+.claude/worktrees
 CLAUDE.local.md
 .devcontainer
 

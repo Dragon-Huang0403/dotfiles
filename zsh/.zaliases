@@ -22,5 +22,29 @@ alias python="python3"
 alias pip="pip3"
 
 function cc(){
-  load_secrets && claude "$@"
+  claude "$@"
+}
+
+function ccr() {
+  local git_root=$(git rev-parse --show-toplevel 2>/dev/null)
+  if [[ -z "$git_root" ]]; then
+    echo "Not in a git repository" >&2
+    return 1
+  fi
+  (cd "$git_root" && claude "$@")
+}
+
+function ccw() {
+  local git_root=$(git rev-parse --show-toplevel 2>/dev/null)
+  if [[ -z "$git_root" ]]; then
+    echo "Not in a git repository" >&2
+    return 1
+  fi
+  local branch="${1:?Usage: ccw <branch-name>}"
+  shift
+  local wt="$git_root/.claude/worktrees/$branch"
+  if [[ ! -d "$wt" ]]; then
+    git worktree add "$wt" -b "$branch" || return 1
+  fi
+  (cd "$wt" && claude "$@")
 }

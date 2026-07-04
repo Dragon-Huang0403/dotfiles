@@ -85,7 +85,7 @@ export LANG="${LANG:-en_US.UTF-8}"
 #
 # SSH
 #
-export SSH_AUTH_SOCK="$HOME/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 
 # For setup eslint config globally, so it knows where to find eslint config from global node_modules
 if command -v npm &>/dev/null; then

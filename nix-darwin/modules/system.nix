@@ -62,7 +62,7 @@
         "/Applications/ChatGPT.app"
         "/Applications/Claude.app"
         "/Applications/Heptabase.app"
-        "/Applications/Visual Studio Code.app"
+        "/Applications/WhatsApp.app"
       ];
       
       # No folder stacks (e.g. remove Downloads)

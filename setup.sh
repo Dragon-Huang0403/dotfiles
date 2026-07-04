@@ -372,7 +372,6 @@ readonly -a STOW_IGNORE_DIRECTORIES=(
   "nix-darwin"  # Nix Darwin configuration (handled by darwin_rebuild)
   ".vscode"
   "raycast_scripts"
-  "stats"       # Stats menu bar monitor (handled conditionally below)
 )
 
 # Check for conflicts before stowing
@@ -394,15 +393,6 @@ stow_package() {
   stow -R -v --no-folding "$1"/
 }
 for_each_stow_package stow_package
-
-# Stow Stats menu bar monitor config only if Stats.app is installed
-if [ -d "/Applications/Stats.app" ]; then
-  dotfiles_echo "Stats.app detected. Stowing Stats configuration..."
-  check_conflicts_for_package "stats"
-  stow_package "stats"
-else
-  dotfiles_echo "Stats.app not installed. Skipping Stats configuration..."
-fi
 
 echo
 

@@ -70,6 +70,7 @@
     "skim"
     "spotify"
     "stats"
+    "thaw"
     "thunderbird"
     "tomatobar"
     "visual-studio-code"

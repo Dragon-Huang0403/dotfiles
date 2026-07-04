@@ -8,3 +8,4 @@ CLAUDE.local.md
 
 .specify
 *.local.*
+**/.claude/settings.local.json

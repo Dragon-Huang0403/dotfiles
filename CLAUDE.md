@@ -20,10 +20,10 @@ Personal macOS dotfiles managed with GNU Stow (symlink manager) and Nix Darwin (
 ### Nix Darwin
 ```bash
 # Rebuild system configuration (after modifying nix-darwin/)
-sudo darwin-rebuild switch --flake ~/dotfiles/nix-darwin#Subscript
+sudo darwin-rebuild switch --flake ~/dotfiles/nix-darwin#personal
 
 # Initial Nix Darwin installation (if darwin-rebuild not available)
-nix run nix-darwin/nix-darwin-24.11#darwin-rebuild -- switch --flake ~/dotfiles/nix-darwin#Subscript
+nix run nix-darwin/nix-darwin-24.11#darwin-rebuild -- switch --flake ~/dotfiles/nix-darwin#personal
 ```
 
 ### Homebrew
@@ -55,9 +55,10 @@ Each top-level directory represents a "package" that gets stowed to `~`:
 
 ### Nix Darwin (nix-darwin/)
 Multi-host flake configuration:
-- `flake.nix` - Entry point with host definitions
-- `hosts/` - Machine-specific configs (Subscript.nix, WorkMac.nix)
-- `modules/` - Reusable modules (homebrew.nix, system.nix, apps.nix)
+- `flake.nix` - Entry point with profile definitions
+- `profiles/` - Per-profile entrypoints (personal.nix); selected via `PROFILE` in setup.sh, decoupled from hostname
+- `modules/shared/` - Shared base modules (common, apps, homebrew, nix, overlays, system)
+- `modules/personal/` - Personal profile layer that merges onto the shared base (dock apps, personal casks, taste CLI picks)
 
 ### Key Integrations
 - **1Password**: SSH agent and secret management (lazy-loaded in `.zsecrets`)

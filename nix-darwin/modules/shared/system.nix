@@ -48,34 +48,21 @@
       
       # Show only open applications in the Dock
       static-only = false;
-      
+
       # Don't show recent applications in Dock
       show-recents = false;
 
-      # Persistent apps in Dock
-      persistent-apps = [
-        "/System/Applications/Apps.app"
-        "/Applications/Spotify.app"
-        "/Applications/Google Chrome.app"
-        "/System/Applications/Calendar.app"
-        "/Applications/iTerm.app"
-        "/Applications/ChatGPT.app"
-        "/Applications/Claude.app"
-        "/Applications/Heptabase.app"
-        "/Applications/WhatsApp.app"
-      ];
-      
       # No folder stacks (e.g. remove Downloads)
       persistent-others = [ ];
 
       # Make Dock icons of hidden applications translucent
       showhidden = true;
-      
+
       # Show the Dock on all displays
       appswitcher-all-displays = true;
 
-     # Position of the dock on screen. Type: null or one of “bottom”, “left”, “right”
-      orientation = "left";
+      # NOTE: persistent-apps and orientation are profile-specific
+      # (see modules/personal/system.nix).
     };
     
     # Finder settings
@@ -175,50 +162,9 @@
     # menuExtraClock.IsAnalog = false;
     
     
+    # NOTE: Hammerspoon and Shottr preferences are profile-specific
+    # (see modules/personal/system.nix).
     CustomUserPreferences = {
-      "org.hammerspoon.Hammerspoon" = {
-        MJConfigFile = "~/.config/hammerspoon/init.lua";
-      };
-      "cc.ffitch.shottr" = {
-        # After capture behaviour
-        afterGrabCopy = true;
-        afterGrabSave = true;
-        afterGrabShow = true;
-        areaCaptureMode = "editor";
-        captureCursor = "auto";
-        # Annotation defaults
-        colorFormat = "HEX";
-        defaultColor = "#FF0C01";
-        # Save behaviour
-        copyOnEsc = true;
-        saveOnEsc = true;
-        saveFormat = "Auto";
-        realPixels = false;
-        downscaleOnSave = false;
-        # UI
-        notificationType = "custom";
-        thumbnailClosing = "manual";
-        snappingMode = 2;
-        windowShadow = "solid";
-        windowSolidColor = "#404448";
-        preferLargeWindow = true;
-        expandableCanvas = true;
-        headlessTextRendering = true;
-        # OCR
-        primaryOCRLang = "en-US";
-        ocrRemoveBreaks = false;
-        # Upload
-        uploadMode = "none";
-        # Scrolling capture
-        scrollingSpeed = 2;
-        scrollingMax = 20000;
-        # Keyboard shortcuts (⇧⌘1-4 for capture modes, ^⌥⇧O for OCR)
-        "KeyboardShortcuts_scrolling"  = ''{"carbonKeyCode":18,"carbonModifiers":768}'';
-        "KeyboardShortcuts_anyWindow"  = ''{"carbonKeyCode":19,"carbonModifiers":768}'';
-        "KeyboardShortcuts_area"       = ''{"carbonKeyCode":20,"carbonModifiers":768}'';
-        "KeyboardShortcuts_fullscreen" = ''{"carbonKeyCode":21,"carbonModifiers":768}'';
-        "KeyboardShortcuts_ocr"        = ''{"carbonModifiers":6400,"carbonKeyCode":31}'';
-      };
       "com.apple.Spotlight" = {
         # Hide Spotlight icon from menu bar
         MenuItemHidden = 1;
@@ -255,11 +201,4 @@
       allowSleepByPowerButton = false;
     };
   };
-
-  # Set Shottr defaultFolder with proper $HOME expansion
-  system.activationScripts.shottrFolder.text = ''
-    echo "Configuring Shottr default folder..."
-    mkdir -p "$HOME/screenshots"
-    defaults write cc.ffitch.shottr defaultFolder "$HOME/screenshots"
-  '';
 }

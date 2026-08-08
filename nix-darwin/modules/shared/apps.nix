@@ -1,9 +1,10 @@
 { pkgs, ... }:
 
 {
+  # Shared, universal CLI tooling. Personal-taste picks live in
+  # modules/personal/apps.nix (concatenated onto this list at merge time).
   environment.systemPackages = with pkgs; [
     atuin
-    zsh-powerlevel10k
     carapace
 
     neovim
@@ -13,7 +14,6 @@
     devcontainer
 
     tmux
-    tmuxinator
 
     direnv
 
@@ -47,7 +47,6 @@
     fzf
     gh
     delta
-    glow
     htop
     jq
     jless

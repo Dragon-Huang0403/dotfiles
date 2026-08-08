@@ -1,12 +1,12 @@
 { ... }:
 
+# Shared Homebrew base: dev tools, codecs/libraries, and fonts.
+# Personal/consumer apps live in modules/personal/homebrew.nix and are
+# concatenated onto these lists at merge time.
+
 {
   # Homebrew needs to be installed on its own!
   homebrew.enable = true;
-
-  homebrew.taps = [
-    "heroku/brew"
-  ];
 
   homebrew.brews = [
     "act"
@@ -18,64 +18,44 @@
     "ghostscript"
     "glances"
     "gnutls"
-    "heroku"
     "imagemagick"
     "jpeg-xl"
     "libmicrohttpd"
     "librist"
-    "minikube"
     "node"
     "numpy"
     "openblas"
     "openjpeg"
     "openvino"
     "pipx"
-    "powerlevel10k"
     "prettier"
     "stow"
     "tesseract"
     { name = "tldr"; link = false; }
     "tlrc"
-    "tor"
     "unbound"
     "webp"
     "wireguard-tools"
   ];
 
   homebrew.casks = [
-    "1password"
-    "1password-cli"
     "alt-tab"
-    "chatgpt"
-    "claude"
     "font-fira-code"
     "font-hack"
     "font-inconsolata"
     "font-meslo-lg-nerd-font"
-    "google-chrome"
-    "grammarly-desktop"
-    "hammerspoon"
-    "heptabase"
     "iterm2"
     "mitmproxy"
     "ngrok"
-    "nordvpn"
     "orbstack"
     "postico"
     "postman"
     "proxyman"
-    "raycast"
-    "shottr"
     "sioyek"
     "skim"
-    "spotify"
     "stats"
     "thaw"
-    "thunderbird"
-    "tomatobar"
     "visual-studio-code"
-    "whatsapp"
     "wireshark-app"
-    "zoom"
   ];
 }

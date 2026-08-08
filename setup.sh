@@ -183,27 +183,49 @@ check_conflicts_for_package() {
 # Prerequisites:
 # - Nix package manager must be installed
 # - Flake configuration must exist at ~/dotfiles/nix-darwin
+# List available profiles (basename without .nix) for error messages
+list_profiles() {
+  local f
+  for f in "${DOTFILES}"/nix-darwin/profiles/*.nix; do
+    [ -e "$f" ] || continue
+    basename "$f" .nix
+  done
+}
+
 darwin_rebuild() {
   dotfiles_echo "Nix is installed. Running Nix Darwin Flake..."
   echo
 
-  # Detect host configuration name from hostname, fallback to Longs-MacBook
-  local host_name
-  host_name=$(scutil --get LocalHostName)
-  if [ ! -f "${DOTFILES}/nix-darwin/hosts/${host_name}.nix" ]; then
-    dotfiles_echo "No host config found for '%s', defaulting to Longs-MacBook" "$host_name"
-    host_name="Longs-MacBook"
+  local profiles_dir="${DOTFILES}/nix-darwin/profiles"
+
+  # Require an explicit profile — no silent default.
+  if [ -z "$PROFILE" ]; then
+    dotfiles_echo "ERROR: No Nix Darwin profile specified."
+    dotfiles_echo "Set one explicitly, e.g.:"
+    dotfiles_echo "  PROFILE=<name> ./setup.sh   or   ./setup.sh <name>"
+    dotfiles_echo "Available profiles: %s" "$(list_profiles | paste -sd ', ' -)"
+    dotfiles_echo "To add a new one, create ${profiles_dir}/<name>.nix"
+    exit 1
   fi
-  dotfiles_echo "Using Nix Darwin configuration: %s" "$host_name"
+
+  # Fail loudly if the requested profile doesn't exist.
+  if [ ! -f "${profiles_dir}/${PROFILE}.nix" ]; then
+    dotfiles_echo "ERROR: Profile '%s' not found." "$PROFILE"
+    dotfiles_echo "Available profiles: %s" "$(list_profiles | paste -sd ', ' -)"
+    dotfiles_echo "To add it, create ${profiles_dir}/${PROFILE}.nix"
+    exit 1
+  fi
+
+  dotfiles_echo "Using Nix Darwin profile: %s" "$PROFILE"
 
   if ! command -v darwin-rebuild >/dev/null; then
     dotfiles_echo "Nix Darwin is not installed. Installing..."
     # Initial installation requires nix run to bootstrap darwin-rebuild
-    nix run nix-darwin/nix-darwin-24.11#darwin-rebuild -- switch --flake ~/dotfiles/nix-darwin#"$host_name"
+    nix run nix-darwin/nix-darwin-24.11#darwin-rebuild -- switch --flake ~/dotfiles/nix-darwin#"$PROFILE"
     dotfiles_echo "Nix Darwin Flake installed."
   else
     # Subsequent runs can use the installed darwin-rebuild command
-    sudo darwin-rebuild switch --flake ~/dotfiles/nix-darwin#"$host_name"
+    sudo darwin-rebuild switch --flake ~/dotfiles/nix-darwin#"$PROFILE"
     dotfiles_echo "Nix Darwin Flake switched."
   fi
 }
@@ -254,6 +276,13 @@ if [ ! -d "$DOTFILES" ]; then
   dotfiles_echo "Please ensure the dotfiles repository is cloned to: ${DOTFILES}"
   exit 1
 fi
+
+# Resolve the Nix Darwin profile to build.
+# The profile is decoupled from the machine hostname: it must be chosen
+# explicitly via the PROFILE env var or the first CLI argument. There is NO
+# default — an unset or unknown profile is a hard error (see darwin_rebuild).
+#   PROFILE=personal ./setup.sh   or   ./setup.sh personal
+PROFILE="${PROFILE:-${1:-}}"
 
 # ============================================================================
 # SYSTEM CONFIGURATION

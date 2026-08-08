@@ -9,19 +9,17 @@
 
   outputs = inputs@{ self, nix-darwin, nixpkgs }:
   let
-    # Function to create a darwin system for a specific host
-    mkDarwinSystem = hostname: nix-darwin.lib.darwinSystem {
-      modules = [ ./hosts/${hostname}.nix ];
+    # Function to create a darwin system for a specific profile
+    mkDarwinSystem = profile: nix-darwin.lib.darwinSystem {
+      modules = [ ./profiles/${profile}.nix ];
       specialArgs = { inherit self; };
     };
   in {
-    # Define configurations for each host
+    # Define configurations for each profile.
+    # Select at install time via setup.sh (PROFILE=<name> ./setup.sh) or directly:
+    #   darwin-rebuild build --flake .#personal
     darwinConfigurations = {
-      # Build with: darwin-rebuild build --flake .#Subscript
-      "Subscript" = mkDarwinSystem "Subscript";
-
-      # Build with: darwin-rebuild build --flake .#Longs-MacBook
-      "Longs-MacBook" = mkDarwinSystem "Longs-MacBook";
+      "personal" = mkDarwinSystem "personal";
     };
   };
 }

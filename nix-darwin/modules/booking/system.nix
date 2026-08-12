@@ -12,12 +12,15 @@
       # Persistent apps in Dock
       persistent-apps = [
         "/System/Applications/Apps.app"
+        "/Applications/Privileges.app"
+        "/Applications/Slack.app"
+        "/System/Applications/Mail.app"
+        "/System/Applications/Calendar.app"
         "/Applications/Spotify.app"
         "/Applications/Google Chrome.app"
-        "/System/Applications/Calendar.app"
         "/Applications/iTerm.app"
+        "/Applications/Visual Studio Code.app"
         "/Applications/ChatGPT.app"
-        "/Applications/Claude.app"
         "/Applications/Heptabase.app"
         "/Applications/WhatsApp.app"
       ];

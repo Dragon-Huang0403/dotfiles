@@ -2,3 +2,7 @@
 	name = Long Huang
 	email = long.huang@booking.com
   	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM/tHZTVTK78t4SEk0Iv00A3fcWvCjrQH50kuMl1DzuZ
+[credential]
+	helper = cache --timeout 691200
+[credential "https://gitlab.com"]
+	helper = !bk gitlab:git-credential

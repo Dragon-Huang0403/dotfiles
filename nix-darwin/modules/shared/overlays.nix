@@ -2,6 +2,12 @@
 
 {
   nixpkgs.overlays = [
+    # Packages taken from nixpkgs-unstable because the pinned stable channel
+    # lags: stable 25.11 is frozen at atuin 18.10.0.
+    (final: prev: {
+      inherit (pkgs-unstable) atuin;
+    })
+
     (final: prev: {
       nodejs_18_17_1 = prev.stdenv.mkDerivation {
         pname   = "nodejs";

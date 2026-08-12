@@ -20,6 +20,7 @@
     #   darwin-rebuild build --flake .#personal
     darwinConfigurations = {
       "personal" = mkDarwinSystem "personal";
+      "booking" = mkDarwinSystem "booking";
     };
   };
 }

@@ -4,7 +4,7 @@
   imports = [
     ../modules/shared/common.nix
     (import ../modules/shared/nix.nix { inherit self; })
-    ../modules/personal            # resolves to modules/personal/default.nix
+    ../modules/booking            # resolves to modules/booking/default.nix
   ];
 
   # Personal profile - per-user identity only.
@@ -12,5 +12,5 @@
   #  hostName is intentionally left unmanaged so the profile doesn't rename the machine.)
 
   # Primary user for user-specific options (homebrew, dock, finder, etc.)
-  system.primaryUser = "xuanlong";
+  system.primaryUser = "lohuang";
 }

@@ -11,26 +11,12 @@
   homebrew.brews = [
     "heroku"
     "minikube"
-    "powerlevel10k"
-    "tor"
   ];
 
   homebrew.casks = [
-    "1password"
-    "1password-cli"
-    "chatgpt"
-    "claude"
-    "google-chrome"
-    "grammarly-desktop"
-    "hammerspoon"
-    "heptabase"
     "nordvpn"
-    "raycast"
-    "shottr"
-    "spotify"
     "thunderbird"
-    "tomatobar"
-    "whatsapp"
+    "wireshark-app"
     "zoom"
   ];
 }

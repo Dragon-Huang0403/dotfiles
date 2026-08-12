@@ -4,6 +4,10 @@
   # Shared, universal CLI tooling. Personal-taste picks live in
   # modules/personal/apps.nix (concatenated onto this list at merge time).
   environment.systemPackages = with pkgs; [
+    zsh-powerlevel10k
+    tmuxinator
+    glow
+    
     atuin
     carapace
 

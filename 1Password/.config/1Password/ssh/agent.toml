@@ -32,7 +32,10 @@
 vault = "Private"
 
 [[ssh-keys]]
-vault = "Subscript"
+vault = "Dev"
 
 [[ssh-keys]]
-vault = "Dev"
+vault = "Booking.com"
+
+[[ssh-keys]]
+vault = "Employee"

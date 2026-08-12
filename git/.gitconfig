@@ -51,8 +51,8 @@
 [merge]
 	conflictstyle = zdiff3
 
-[includeIf "gitdir:~/subscript/"]
-  path = ~/.subscript.gitconfig
+[includeIf "gitdir:~/booking/"]
+  path = ~/.booking.gitconfig
 [rerere]
 	enabled = true
 	autoupdate = true

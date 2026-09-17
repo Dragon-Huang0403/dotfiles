@@ -89,6 +89,12 @@ source <(carapace _carapace)
 eval "$(direnv hook zsh)"
 
 #
+# GnuPG, commit signing
+#
+# $TTY is a zsh builtin, so this costs no subshell at startup.
+export GPG_TTY=$TTY
+
+#
 # Local zshrc
 #
 [[ -r ${ZDOTDIR:-$HOME}/.zshrc_local ]] && source ${ZDOTDIR:-$HOME}/.zshrc_local
@@ -102,6 +108,11 @@ eval "$(direnv hook zsh)"
 # Matching behavior of most other shells.
 # https://effective-shell.com/part-2-core-skills/fly-on-the-command-line
 bindkey -e
+
+#
+# Booking zshrc
+#
+[[ -r ${ZDOTDIR:-$HOME}/.booking.zshrc ]] && source ${ZDOTDIR:-$HOME}/.booking.zshrc
 
 # Finish profiling by calling zprof.
 [[ "$ZPROFRC" -eq 1 ]] && zprof

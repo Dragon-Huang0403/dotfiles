@@ -3,3 +3,4 @@ backup
 
 .DS_Store
 anthropic_key.sh
+*local*

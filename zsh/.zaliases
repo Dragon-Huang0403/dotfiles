@@ -48,3 +48,7 @@ function ccw() {
   fi
   (cd "$wt" && claude "$@")
 }
+
+function vv() {
+  /opt/homebrew/bin/codex --model="gpt-6-astra"
+}

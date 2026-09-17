@@ -45,6 +45,8 @@
 
     # Security
     gitleaks
+    gnupg
+    pinentry_mac # passphrase prompt backed by macOS Keychain
 
     # CLI tools
     bat

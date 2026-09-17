@@ -13,10 +13,10 @@
       persistent-apps = [
         "/System/Applications/Apps.app"
         "/Applications/Privileges.app"
+        "/Applications/Spotify.app"
         "/Applications/Slack.app"
         "/System/Applications/Mail.app"
         "/System/Applications/Calendar.app"
-        "/Applications/Spotify.app"
         "/Applications/Google Chrome.app"
         "/Applications/iTerm.app"
         "/Applications/Visual Studio Code.app"

@@ -12,15 +12,15 @@
 [user]
 	name = Xuan Long Huang
 	email = j0918023423@gmail.com
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINm8BC7ZtWI34jwt7ik9ftc9tgc1QN3660Yf9jgNeqV8
+	# signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINm8BC7ZtWI34jwt7ik9ftc9tgc1QN3660Yf9jgNeqV8
 [commit]
-	gpgsign = true
+	gpgsign = false
 	verbose = true
-[gpg]
-	format = ssh
-[gpg "ssh"]
-	program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
-	allowedSignersFile = ~/.config/git/allowed-signers
+# [gpg]
+# 	format = ssh
+# [gpg "ssh"]
+# 	program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+# 	allowedSignersFile = ~/.config/git/allowed-signers
 [init]
 	defaultBranch = main
 [push]

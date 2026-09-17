@@ -46,7 +46,7 @@ path=(
   $HOME/.local/bin(N)
   $HOME/Library/Android/sdk/platform-tools
   $HOME/Library/Android/sdk/emulator
-  $HOME/flutter/flutter/bin
+  $HOME/fvm/default/bin              # fvm global SDK (replaces $HOME/flutter/flutter/bin)
   $HOME/.pub-cache/bin
 )
 
@@ -84,8 +84,10 @@ export LANG="${LANG:-en_US.UTF-8}"
 
 #
 # SSH
-#
-export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+# 
+
+# Disable this because conflict of ssh -A booking.com. 1password ssh agent don't allow add ca. causing ssh connection fails
+# export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 
 # For setup eslint config globally, so it knows where to find eslint config from global node_modules
 if command -v npm &>/dev/null; then

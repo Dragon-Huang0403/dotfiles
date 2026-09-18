@@ -34,15 +34,6 @@ alias zprofrc="ZPROFRC=1 zsh"
 
 
 # 
-# Oh My Zsh
-# 
-
-ZSH_THEME="powerlevel10k/powerlevel10k"
-export ZSH="$HOME/.oh-my-zsh"
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting fzf-tab zsh-nvm)
-source $ZSH/oh-my-zsh.sh
-
-# 
 # Powerlevel10k
 # 
 
@@ -53,9 +44,18 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# 
+# Oh My Zsh
+# 
+
+ZSH_THEME="powerlevel10k/powerlevel10k"
+export ZSH="$HOME/.oh-my-zsh"
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting fzf-tab zsh-nvm)
+source $ZSH/oh-my-zsh.sh
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
+# source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
 
 #
 # Aliases
@@ -117,6 +117,13 @@ bindkey -e
 # Finish profiling by calling zprof.
 [[ "$ZPROFRC" -eq 1 ]] && zprof
 [[ -v ZPROFRC ]] && unset ZPROFRC
+
+
+# >>> fabric >>>
+# Managed by Fabric (v1). Edits inside this block may be overwritten.
+# Remove with `fabric path disable`, or just delete this block.
+[ -x "$HOME/.fabric/bin/fabric" ] && export PATH="$HOME/.fabric/bin:$PATH"
+# <<< fabric <<<
 
 # Always return success
 true

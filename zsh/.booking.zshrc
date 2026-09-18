@@ -7,15 +7,6 @@ _bootstrap_bk () {
 }
 compdef _bootstrap_bk bk
 
-# Git Integration
-autoload -Uz vcs_info
-precmd_vcs_info() { vcs_info }
-precmd_functions+=( precmd_vcs_info )
-setopt prompt_subst
-zstyle ':vcs_info:git:*' formats '(%b)'
-zstyle ':vcs_info:*' enable git
-zstyle ':vcs_info:*' check-for-changes true
-
 # Prompt (aka PS1)
 PROMPT="%B%F{014}%n%f%b %F{015}in%f %B%F{011}%2~%f%b \$vcs_info_msg_0_ $ "
 
@@ -26,12 +17,6 @@ if [ -d /Library/Java/JavaVirtualMachines/zulu-21.jdk ]; then
 elif [ -d /opt/homebrew/opt/openjdk@21 ]; then
     export PATH="/opt/homebrew/opt/openjdk@21/bin:$PATH"
     export JAVA_HOME=$(/usr/libexec/java_home -v 21)
-fi
-
-if [ -d $HOME/.nvm ]; then
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi
 
 #

@@ -553,6 +553,15 @@ git submodule update --init --recursive
 echo
 
 # ============================================================================
+# CLAUDE CODE SKILLS LINKING TO AGENT
+# ============================================================================
+
+dotfiles_echo "Creating symlink folder for claude code skills"
+ln -sfn ~/.agents/skills ~/.claude/skills
+
+echo
+
+# ============================================================================
 # COMPLETION
 # ============================================================================
 

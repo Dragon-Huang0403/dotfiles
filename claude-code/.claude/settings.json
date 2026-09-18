@@ -50,5 +50,139 @@
   },
   "companyAnnouncements": [
     "Welcome to Claude Code at Booking.com! For tips and troubleshooting, see https://u.booking.com/claudecode."
-  ]
+  ],
+    "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/lohuang/.fabric/bin/fabric' hook --client claude-code --hook SessionStart",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/lohuang/.fabric/bin/fabric' hook --client claude-code --hook UserPromptSubmit",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/lohuang/.fabric/bin/fabric' hook --client claude-code --hook PreToolUse",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/lohuang/.fabric/bin/fabric' hook --client claude-code --hook PermissionRequest",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/lohuang/.fabric/bin/fabric' hook --client claude-code --hook PostToolUse",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/lohuang/.fabric/bin/fabric' hook --client claude-code --hook PostToolUseFailure",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/lohuang/.fabric/bin/fabric' hook --client claude-code --hook SubagentStart",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/lohuang/.fabric/bin/fabric' hook --client claude-code --hook SubagentStop",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/lohuang/.fabric/bin/fabric' hook --client claude-code --hook PreCompact",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/lohuang/.fabric/bin/fabric' hook --client claude-code --hook PostCompact",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/lohuang/.fabric/bin/fabric' hook --client claude-code --hook SessionEnd",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/Users/lohuang/.fabric/bin/fabric' hook --client claude-code --hook Stop",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
 }

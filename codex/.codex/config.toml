@@ -75,6 +75,9 @@ url = "http://127.0.0.1:8765/mcp"
 [mcp_servers.fabric.tools.search_tools]
 approval_mode = "approve"
 
+[mcp_servers.flog]
+url = "https://context-mcp.prod.booking.com/flog/mcp"
+
 [hooks.state]
 
 [hooks.state."/Users/lohuang/.codex/hooks.json:pre_tool_use:0:0"]
@@ -116,3 +119,4 @@ gpt-6-astra = 4
 
 [tui]
 default_mode = "plan"
+screen_reader_detection_done = true

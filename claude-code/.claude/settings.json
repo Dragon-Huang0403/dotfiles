@@ -33,25 +33,7 @@
     "defaultMode": "plan"
   },
   "model": "opus[1m]",
-  "enabledPlugins": {
-    "superpowers@claude-plugins-official": true,
-    "everything-claude-code@everything-claude-code": true,
-    "commit-commands@claude-plugins-official": true,
-    "context7@claude-plugins-official": false,
-    "code-review@claude-plugins-official": false,
-    "pr-review-toolkit@claude-plugins-official": false,
-    "feature-dev@claude-plugins-official": false,
-    "code-simplifier@claude-plugins-official": false,
-    "ralph-loop@claude-plugins-official": false,
-    "playground@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": true,
-    "claude-code-setup@claude-plugins-official": true,
-    "atlassian@claude-plugins-official": true
-  },
-  "companyAnnouncements": [
-    "Welcome to Claude Code at Booking.com! For tips and troubleshooting, see https://u.booking.com/claudecode."
-  ],
-    "hooks": {
+  "hooks": {
     "SessionStart": [
       {
         "hooks": [
@@ -184,5 +166,24 @@
         ]
       }
     ]
-  }
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true,
+    "everything-claude-code@everything-claude-code": true,
+    "commit-commands@claude-plugins-official": true,
+    "context7@claude-plugins-official": false,
+    "code-review@claude-plugins-official": false,
+    "pr-review-toolkit@claude-plugins-official": false,
+    "feature-dev@claude-plugins-official": false,
+    "code-simplifier@claude-plugins-official": false,
+    "ralph-loop@claude-plugins-official": false,
+    "playground@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "claude-code-setup@claude-plugins-official": true,
+    "atlassian@claude-plugins-official": true,
+    "mattpocock-skills@claude-plugins-official": true
+  },
+  "companyAnnouncements": [
+    "Welcome to Claude Code at Booking.com! For tips and troubleshooting, see https://u.booking.com/claudecode."
+  ]
 }

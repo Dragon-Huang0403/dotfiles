@@ -32,8 +32,18 @@ if [[ -x $_java_bin ]]; then
 fi
 unset _java_bin
 
-init_bk_tokens() {
+init_bk_dqs_tokens() {
   export AUTH_X_SERVER_URL="https://authxserver.dqs.booking.com"
+  export BK_AUTH_SSO_URL="https://account.dev.booking.com/SSO/staff/auth?redirect_to=https://bk-authentication-sso.dqs.booking.com/v1/redirect?redirect_to=http://localhost:8980"
+  export BK_REFRESH_TOKEN="$(bk auth:issue-sso-refresh-token)"
+  export IAM_TOKEN="$(bk auth:issue-sso-access-token)"
+  echo "AUTH_X_SERVER_URL=$AUTH_X_SERVER_URL"
+  echo "BK_AUTH_SSO_URL=$BK_AUTH_SSO_URL"
+  echo "BK_REFRESH_TOKEN=$BK_REFRESH_TOKEN"
+  echo "IAM_TOKEN=$IAM_TOKEN"
+}
+init_bk_tokens() {
+  export AUTH_X_SERVER_URL="https://authxserver.booking.com"
   export BK_AUTH_SSO_URL="https://account.dev.booking.com/SSO/staff/auth?redirect_to=https://bk-authentication-sso.dqs.booking.com/v1/redirect?redirect_to=http://localhost:8980"
   export BK_REFRESH_TOKEN="$(bk auth:issue-sso-refresh-token)"
   export IAM_TOKEN="$(bk auth:issue-sso-access-token)"
@@ -48,3 +58,21 @@ get_fqdn(){
     echo "FQDN=$FQDN"
 }
 
+export LONG_KVM_HOST="lohuang-cron.dev.booking.com"
+DB_CREDENTIAL_CACHE=""
+get_db_credential_from_kvm() {
+    if [ -z "$DB_CREDENTIAL_CACHE" ]; then
+        DB_CREDENTIAL_CACHE="$(ssh $LONG_KVM_HOST 'cat /var/run/secrets/booking.com/db.json')"
+    fi
+    echo $DB_CREDENTIAL_CACHE
+}
+
+select_db_credential_from_kvm(){
+    json="$(get_db_credential_from_kvm)"
+    db=$(jq -r '.database | keys[]' <<<"$json" | fzf)
+    jq --arg db "$db" '.database[$db]' <<<"$json"
+}
+
+bl(){
+    bk auth:login && glab auth login --hostname gitlab.com # && acli auth login
+}

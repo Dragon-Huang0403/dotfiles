@@ -50,5 +50,5 @@ function ccw() {
 }
 
 function vv() {
-  /opt/homebrew/bin/codex --model="gpt-6-astra"
+  /opt/homebrew/bin/codex --model="gpt-6-astra" -c model_reasoning_effort="medium"
 }

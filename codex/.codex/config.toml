@@ -5,7 +5,6 @@ notify = [
 model = "gpt-6-astra"
 model_reasoning_effort = "medium"
 
-
 [marketplaces.openai-bundled]
 source_type = "local"
 source = "/Users/lohuang/.codex/.tmp/bundled-marketplaces/openai-bundled"
@@ -62,6 +61,9 @@ trust_level = "trusted"
 [projects."/Users/lohuang/booking/accommodation-payments-eligibility"]
 trust_level = "trusted"
 
+[projects."/Users/lohuang/dotfiles"]
+trust_level = "trusted"
+
 [desktop]
 conversationDetailMode = "STEPS_PROSE"
 ambient-suggestions-enabled = true
@@ -77,6 +79,10 @@ approval_mode = "approve"
 
 [mcp_servers.flog]
 url = "https://context-mcp.prod.booking.com/flog/mcp"
+
+[mcp_servers.cua_repl]
+command = "/Applications/ChatGPT.app/Contents/MacOS/ChatGPT"
+enabled = false
 
 [hooks.state]
 
@@ -114,9 +120,13 @@ trusted_hash = "sha256:a4bbbaa0ad4ce9392d035d2f40eaf2de4d8b78a650b75bc4c6bd91d6e
 generate_memories = true
 use_memories = true
 
-[tui.model_availability_nux]
-gpt-6-astra = 4
-
 [tui]
 default_mode = "plan"
 screen_reader_detection_done = true
+
+[tui.model_availability_nux]
+gpt-6-astra = 4
+"gpt-6.1-sol" = 4
+
+[apps.connector_openai_pages.tools."chatgpt_space.edit_page"]
+approval_mode = "approve"

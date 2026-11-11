@@ -59,6 +59,7 @@ get_fqdn(){
 }
 
 export LONG_KVM_HOST="lohuang-cron.dev.booking.com"
+export KVM=$LONG_KVM_HOST
 DB_CREDENTIAL_CACHE=""
 get_db_credential_from_kvm() {
     if [ -z "$DB_CREDENTIAL_CACHE" ]; then

@@ -50,7 +50,6 @@
     "font-inconsolata"
     "font-meslo-lg-nerd-font"
     "hammerspoon"
-    "heptabase"
     "iterm2"
     "mitmproxy"
     "ngrok"
@@ -66,6 +65,5 @@
     "stats"
     "thaw"
     "tomatobar"
-    "whatsapp"
   ];
 }

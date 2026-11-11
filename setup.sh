@@ -557,7 +557,8 @@ echo
 # ============================================================================
 
 dotfiles_echo "Creating symlink folder for claude code skills"
-ln -sfn ~/.agents/skills ~/.claude/skills
+mkdir -p ~/.claude/skills
+ln -sfn ~/.agents/skills/* ~/.claude/skills
 
 echo
 

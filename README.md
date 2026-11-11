@@ -47,6 +47,38 @@ dotfiles/
 ~/dotfiles/setup.sh
 ```
 
+### Agent skills
+
+The `agents` package uses Stow's default directory folding so each skill is
+installed as a directory symlink. Other packages use `--no-folding`.
+Keep `~/.agents/skills` as a real directory so separately installed skills can
+coexist with dotfiles-managed skills.
+
+To update only agent skills (without running the rest of setup):
+
+```bash
+cd ~/dotfiles
+mkdir -p ~/.agents/skills
+stow --simulate --restow agents
+stow --restow --verbose agents
+```
+
+When migrating an older installation with individual file symlinks, first move
+existing directories whose names occur under `agents/.agents/skills` into a
+new timestamped `backup/skills-directory-links-.../` directory. Preserve the
+complete directories, including local-only files and links; do not delete them
+or use `--adopt`. Leave unrelated installed skills and `.system` in place.
+Then run the commands above. If simulation reports a conflict, restore the
+backed-up directories and resolve the conflict before applying Stow.
+
+The November 2026 migration also backed up the obsolete `claude-handoff`
+directory with its broken link. Local-only `code-review` metadata and scripts
+remain in the migration backup rather than being added to the source skill.
+
+Verify that each managed skill directory is a symlink and its `SKILL.md` is
+readable. Restart Codex if the skills do not appear automatically, then check
+its skill selector. Existing enable/disable settings still apply.
+
 ## How it works
 
 GNU Stow creates symlinks from your home to this repo:

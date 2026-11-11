@@ -419,7 +419,14 @@ stow_package() {
   dotfiles_echo "Stowing ${1}..."
   # -R (restow) = unstow + stow, removes symlinks for deleted files
   # -v flag provides verbose output showing which symlinks are created/removed
-  stow -R -v --no-folding "$1"/
+  if [ "$1" = "agents" ]; then
+    # Keep the shared skills root real, but let Stow link whole skill folders.
+    # Codex discovery supports symlinked skill directories.
+    mkdir -p "${HOME}/.agents/skills"
+    stow -R -v "$1"/
+  else
+    stow -R -v --no-folding "$1"/
+  fi
 }
 for_each_stow_package stow_package
 

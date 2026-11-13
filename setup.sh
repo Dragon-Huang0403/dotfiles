@@ -411,7 +411,7 @@ git submodule update --init --recursive -- . ':(exclude)vendor/chrome-devtools-m
 git -c submodule.recurse=false submodule update --init --depth=1 -- vendor/chrome-devtools-mcp || exit 1
 git -C vendor/chrome-devtools-mcp sparse-checkout set --cone skills/chrome-devtools-cli || exit 1
 
-readonly -a BOOKING_SKILLS=(bk-cli harness servicemesh src-cli)
+readonly -a BOOKING_SKILLS=(bk-cli harness servicemesh src-cli check-flog-errors check-bks-metrics)
 # Keep all Booking skills available locally; only link the selected common skills.
 git -c submodule.recurse=false submodule update --init --depth=1 -- vendor/booking-coding-agent-tools || exit 1
 git -C vendor/booking-coding-agent-tools sparse-checkout disable || exit 1
@@ -509,6 +509,7 @@ dotfiles_echo "Syncing upstream skill symlinks..."
 sync_upstream_skills mattpocock-skills skills || exit 1
 sync_upstream_skills chrome-devtools-mcp skills chrome-devtools-cli || exit 1
 sync_upstream_skills booking-coding-agent-tools common/skills "${BOOKING_SKILLS[@]}" || exit 1
+sync_upstream_skills booking-coding-agent-tools fintech/partner-payments/partner-payments-onboarding/skills slo-breach-investigation || exit 1
 
 # Check for conflicts before stowing
 # This is a safety measure to prevent accidental data loss

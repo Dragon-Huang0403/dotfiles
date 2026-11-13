@@ -1,29 +1,17 @@
 ---
 name: db-read
-description: Read Booking MySQL databases in production (Pay/PPO via 1Password) and DQS (via KVM SSH). Use for connection checks, schema discovery, and data investigation; not database changes.
+description: Read Booking DQS MySQL databases via KVM SSH. Use for connection checks, schema discovery, and data investigation; not database changes.
 ---
 
-# Database reads
+# DQS database reads
 
-Use [scripts/query.py](scripts/query.py) for all connections and queries. It retrieves credentials privately and enforces bounded, read-only SQL. Requires `uv`, plus `op` and an unlocked/authenticated 1Password app for production, or SSH access for DQS. Resolve script paths relative to this skill; examples assume this directory.
+Use [scripts/query.py](scripts/query.py) for all connections and queries. It retrieves credentials privately and enforces bounded, read-only SQL. Requires `uv` and SSH access to the DQS KVM. Resolve script paths relative to this skill; examples assume this directory.
 
-## Choose the target
+## Select the DQS database
 
-Infer the environment and database from the request; ask if ambiguous. Never switch targets or credential sources to work around a failure.
+Infer the database from the request; ask if ambiguous. Credentials come from the KVM’s `/var/run/secrets/booking.com/db.json`. Never switch environments or credential sources to work around a failure.
 
-| Target | Credential source |
-|---|---|
-| `pay` | 1Password: Employee / Pay Prod |
-| `ppo` | 1Password: Employee / PPO Prod |
-| `dqs` | KVM: `/var/run/secrets/booking.com/db.json` |
-
-```bash
-uv run scripts/query.py --target ppo --check
-```
-
-### DQS
-
-Both helpers default to exported `$KVM` from `.booking.zshrc`; `--kvm-host HOST` overrides it. If unset, load `.booking.zshrc` in the calling shell or provide the override. Helpers do not source shell configuration themselves. Confirm the KVM belongs to the intended environment; `--target dqs` does not verify that.
+Both helpers default to exported `$KVM` from `.booking.zshrc`; `--kvm-host HOST` overrides it. If unset, load `.booking.zshrc` in the calling shell or provide the override. Helpers do not source shell configuration themselves. Confirm the KVM belongs to the intended DQS environment; `--target dqs` does not verify that.
 
 The shell's `select_db_credential_from_kvm` calls `get_db_credential_from_kvm`, selects a database key with `fzf`, and prints credentials. Agents should use [scripts/kvm.py](scripts/kvm.py) instead: it reads the same JSON privately and prints only database keys.
 
@@ -47,7 +35,7 @@ There is no automatic `rw` fallback. Query protections still apply, but the acco
 Supply one SELECT through stdin. Use `information_schema` to discover schemas, columns, and indexes; SHOW and DESCRIBE are unsupported.
 
 ```bash
-uv run scripts/query.py --target pay <<'SQL'
+uv run scripts/query.py --target dqs --db-key DISCOVERED_KEY <<'SQL'
 SELECT table_name, column_name, data_type
 FROM information_schema.columns
 WHERE table_schema = 'DISCOVERED_SCHEMA'
@@ -70,7 +58,6 @@ TLS is required with certificate/hostname verification disabled under the establ
 Keep credential JSON and connection values private: never expose them in tool output, arguments, environment variables, files, debug logs, or raw exceptions. Use the helpers' sanitized diagnostics; report numeric MySQL errors and the failed operation.
 
 - **Sandbox denial:** retry the same helper through the execution tool's approval mechanism.
-- **1Password failure:** check `op` availability and app unlock/sign-in; correct missing fields in 1Password. Never ask for pasted credentials.
 - **KVM SSH/fingerprint failure:** ask the user to run `ssh -A ssh.booking.com` interactively to refresh fingerprint/access, then retry. Do not disable host-key verification or delete known-host entries. Empty/invalid credential JSON is a failure even if the shell command exits zero.
 - **Query failure:** diagnose separately from SSH. Narrow timeouts or inspect the plan; do not automatically repeat costly queries.
 

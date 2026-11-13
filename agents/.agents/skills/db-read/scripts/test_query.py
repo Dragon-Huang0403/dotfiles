@@ -1,4 +1,4 @@
-"""Offline safety tests. Never connect to production."""
+"""Offline safety tests. Never connect to live databases."""
 import contextlib
 import io
 import json
@@ -41,10 +41,10 @@ class QueryTests(unittest.TestCase):
             "SHOW PROCESSLIST", "SELECT * FROM t LIMIT @x", "nonsense",
             "SELECT * FROM (SELECT SLEEP(2)) x", "WITH x AS (DELETE FROM t) SELECT * FROM x",
         ]
-        with patch.object(query, "get_credentials") as credentials:
+        with patch.object(query.kvm, "credentials") as credentials:
             for sql in forbidden:
                 with self.subTest(sql=sql), self.assertRaises(query.SafeError):
-                    query.investigate("ppo", sql)
+                    query.investigate("dqs", sql, db_key="example")
             credentials.assert_not_called()
 
     def test_limits(self):
@@ -62,9 +62,9 @@ class QueryTests(unittest.TestCase):
 
     def run_fake(self, connection, **kwargs):
         fields = {"hostname": "HOST_SENTINEL", "username": "USER_SENTINEL", "password": "PASSWORD_SENTINEL"}
-        with patch.object(query, "get_credentials", return_value=(fields, 3306)), \
+        with patch.object(query.kvm, "credentials", return_value=(fields, 3306)), \
              patch.object(query.pymysql, "connect", return_value=connection) as connect:
-            result = query.investigate("ppo", "SELECT 1", **kwargs)
+            result = query.investigate("dqs", "SELECT 1", db_key="example", **kwargs)
             context = connect.call_args.kwargs["ssl"]
             self.assertEqual(context.verify_mode, ssl.CERT_NONE)
             self.assertFalse(context.check_hostname)
@@ -108,16 +108,25 @@ class QueryTests(unittest.TestCase):
         self.assertTrue(result["truncated"])
         self.assertLessEqual(len(json.dumps(result).encode()), query.MAX_BYTES)
 
-    def test_1password_errors_never_emit_output(self):
-        for payload, status in [("PASSWORD_SENTINEL", 1), ("PASSWORD_SENTINEL", 0), ('{"fields":[]}', 0)]:
-            process = MagicMock(returncode=status, stdout=payload, stderr="PASSWORD_SENTINEL")
-            captured = io.StringIO()
-            with patch.object(query.subprocess, "run", return_value=process), \
-                 contextlib.redirect_stdout(captured), contextlib.redirect_stderr(captured):
-                with self.assertRaises(query.SafeError) as caught:
-                    query.get_credentials("pay")
-            self.assertEqual(captured.getvalue(), "")
-            self.assertNotIn("SENTINEL", str(caught.exception))
+    def test_unsupported_targets_fail_before_credentials(self):
+        with patch.object(query.kvm, "credentials") as credentials, \
+             patch.object(query.pymysql, "connect") as connect:
+            for target in ("pay", "ppo", "unknown"):
+                with self.subTest(target=target), self.assertRaises(query.SafeError):
+                    query.investigate(target, "SELECT 1", db_key="example")
+            credentials.assert_not_called()
+            connect.assert_not_called()
+
+    def test_cli_rejects_removed_targets_and_missing_db_key(self):
+        for args in (["--target", "pay", "--db-key", "example"],
+                     ["--target", "ppo", "--db-key", "example"],
+                     ["--target", "dqs"]):
+            with self.subTest(args=args), patch("sys.argv", ["query.py", *args, "--check"]), \
+                 patch.object(query.kvm, "credentials") as credentials, \
+                 contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as caught:
+                query.main()
+            self.assertEqual(caught.exception.code, 2)
+            credentials.assert_not_called()
 
 
 if __name__ == "__main__":

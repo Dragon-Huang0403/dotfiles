@@ -10,3 +10,14 @@
 [submodule "tmux/.config/tmux/plugins/catppuccin/tmux"]
 	path = tmux/.config/tmux/plugins/catppuccin/tmux
 	url = https://github.com/catppuccin/tmux.git
+[submodule "vendor/mattpocock-skills"]
+	path = vendor/mattpocock-skills
+	url = https://github.com/mattpocock/skills.git
+[submodule "vendor/chrome-devtools-mcp"]
+	path = vendor/chrome-devtools-mcp
+	url = https://github.com/ChromeDevTools/chrome-devtools-mcp.git
+	shallow = true
+[submodule "vendor/booking-coding-agent-tools"]
+	path = vendor/booking-coding-agent-tools
+	url = git@gitlab.com:booking-com/genai-eng/coding-agent-tools.git
+	shallow = true

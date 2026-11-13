@@ -65,13 +65,12 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [desktop]
-conversationDetailMode = "STEPS_PROSE"
+conversationDetailMode = "STEPS_COMMANDS"
 ambient-suggestions-enabled = true
 followUpQueueMode = "queue"
 external-agent-import-sync-enabled = true
 
 [mcp_servers.fabric]
-enabled = true
 url = "http://127.0.0.1:8765/mcp"
 
 [mcp_servers.fabric.tools.search_tools]
@@ -83,6 +82,12 @@ url = "https://context-mcp.prod.booking.com/flog/mcp"
 [mcp_servers.cua_repl]
 command = "/Applications/ChatGPT.app/Contents/MacOS/ChatGPT"
 enabled = false
+
+[mcp_servers.paymentsactivation]
+url = "https://context-mcp.prod.booking.com/paymentsactivation/mcp"
+
+[mcp_servers.paymentseligibility]
+url = "https://context-mcp.prod.booking.com/paymentseligibility/mcp"
 
 [hooks.state]
 

@@ -58,12 +58,11 @@ get_fqdn(){
     echo "FQDN=$FQDN"
 }
 
-export LONG_KVM_HOST="lohuang-cron.dev.booking.com"
-export KVM=$LONG_KVM_HOST
+export KVM_HOST="lohuang-cron.dev.booking.com"
 DB_CREDENTIAL_CACHE=""
 get_db_credential_from_kvm() {
     if [ -z "$DB_CREDENTIAL_CACHE" ]; then
-        DB_CREDENTIAL_CACHE="$(ssh $LONG_KVM_HOST 'cat /var/run/secrets/booking.com/db.json')"
+        DB_CREDENTIAL_CACHE="$(ssh $KVM_HOST 'cat /var/run/secrets/booking.com/db.json')"
     fi
     echo $DB_CREDENTIAL_CACHE
 }
@@ -72,6 +71,10 @@ select_db_credential_from_kvm(){
     json="$(get_db_credential_from_kvm)"
     db=$(jq -r '.database | keys[]' <<<"$json" | fzf)
     jq --arg db "$db" '.database[$db]' <<<"$json"
+}
+
+kvm() {
+    ssh $KVM_HOST
 }
 
 bl(){

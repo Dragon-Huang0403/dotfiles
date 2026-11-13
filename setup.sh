@@ -395,6 +395,7 @@ cd "${DOTFILES}/" || {
 # The 'readonly' keyword ensures this array cannot be modified later
 readonly -a STOW_IGNORE_DIRECTORIES=(
   "backup"      # Backup directory for conflicts
+  "vendor"      # Upstream repositories referenced by skill symlinks
   "iterm2"      # iTerm2 preferences (handled separately)
   ".git"        # Git repository files
   ".github"     # GitHub specific files
@@ -402,6 +403,112 @@ readonly -a STOW_IGNORE_DIRECTORIES=(
   ".vscode"
   "raycast_scripts"
 )
+
+# Initialize before Stow so skill symlink targets exist on fresh clones.
+dotfiles_echo "Initializing git submodules..."
+git submodule update --init --recursive -- . ':(exclude)vendor/chrome-devtools-mcp' ':(exclude)vendor/booking-coding-agent-tools' || exit 1
+# Only the CLI skill is needed; do not initialize Chrome's build dependencies.
+git -c submodule.recurse=false submodule update --init --depth=1 -- vendor/chrome-devtools-mcp || exit 1
+git -C vendor/chrome-devtools-mcp sparse-checkout set --cone skills/chrome-devtools-cli || exit 1
+
+readonly -a BOOKING_SKILLS=(bk-cli harness servicemesh src-cli)
+# Keep all Booking skills available locally; only link the selected common skills.
+git -c submodule.recurse=false submodule update --init --depth=1 -- vendor/booking-coding-agent-tools || exit 1
+git -C vendor/booking-coding-agent-tools sparse-checkout disable || exit 1
+
+# Sync only links owned by this upstream; never replace personal skill folders.
+sync_upstream_skills() {
+  local repository="$1"
+  local skills_root="$2"
+  shift 2
+  local -a selected_skills=("$@")
+  local source_root="${DOTFILES}/vendor/${repository}/${skills_root}"
+  local destination="${DOTFILES}/agents/.agents/skills"
+  local prefix="../../../vendor/${repository}/${skills_root}/"
+  local manifest skill name target link previous selected found
+  local -a names=() targets=()
+
+  [ -d "$source_root" ] || return 1
+  mkdir -p "$destination" || return 1
+  while IFS= read -r -d '' manifest; do
+    skill="${manifest%/SKILL.md}"
+    name="${skill##*/}"
+    if [ "${#selected_skills[@]}" -gt 0 ]; then
+      found=false
+      for selected in "${selected_skills[@]}"; do
+        [ "$name" = "$selected" ] && found=true
+      done
+      [ "$found" = true ] || continue
+    fi
+    for previous in "${names[@]}"; do
+      if [ "$previous" = "$name" ]; then
+        dotfiles_echo "ERROR: Duplicate upstream skill name: $name"
+        return 1
+      fi
+    done
+    names+=("$name")
+    targets+=("${prefix}${skill#"$source_root"/}")
+  done < <(find "$source_root" -type f -name SKILL.md -print0)
+
+  for selected in "${selected_skills[@]}"; do
+    found=false
+    for name in "${names[@]}"; do
+      [ "$name" = "$selected" ] && found=true
+    done
+    if [ "$found" = false ]; then
+      dotfiles_echo "ERROR: Selected skill missing in $repository: $selected; existing links preserved."
+      return 1
+    fi
+  done
+
+  # An empty checkout is likely an upstream layout change, not a deletion.
+  if [ "${#names[@]}" -eq 0 ]; then
+    dotfiles_echo "ERROR: No upstream skills found; existing links preserved."
+    return 1
+  fi
+
+  local index
+  for ((index=0; index<${#names[@]}; index++)); do
+    link="$destination/${names[index]}"
+    target="${targets[index]}"
+    if [ -L "$link" ]; then
+      previous=$(readlink "$link") || return 1
+      case "$previous" in
+        "$prefix"*)
+          [ "$previous" = "$target" ] && continue
+          unlink "$link" || return 1
+          ;;
+        *) dotfiles_echo "Preserving local skill: ${names[index]}"; continue ;;
+      esac
+    elif [ -e "$link" ]; then
+      dotfiles_echo "Preserving local skill: ${names[index]}"
+      continue
+    fi
+    ln -s "$target" "$link" || return 1
+  done
+
+  # Remove obsolete upstream links after skills were renamed or deleted.
+  for link in "$destination"/*; do
+    [ -L "$link" ] || continue
+    previous=$(readlink "$link") || return 1
+    case "$previous" in
+      "$prefix"*)
+        found=false
+        for name in "${names[@]}"; do
+          [ "${link##*/}" = "$name" ] && found=true
+        done
+        if [ ! -f "$link/SKILL.md" ] || [ "$found" = false ]; then
+          unlink "$link" || return 1
+        fi
+        ;;
+    esac
+  done
+}
+
+dotfiles_echo "Syncing upstream skill symlinks..."
+sync_upstream_skills mattpocock-skills skills || exit 1
+sync_upstream_skills chrome-devtools-mcp skills chrome-devtools-cli || exit 1
+sync_upstream_skills booking-coding-agent-tools common/skills "${BOOKING_SKILLS[@]}" || exit 1
 
 # Check for conflicts before stowing
 # This is a safety measure to prevent accidental data loss
@@ -547,15 +654,6 @@ if [ -f "${HOME}/.vimrc" ] && command -v vim >/dev/null; then
   dotfiles_echo "Installing vim plugins..."
   vim -es -u "${HOME}/.vimrc" -i NONE -c "PlugInstall --sync" -c qa || true
 fi
-
-echo
-
-# ============================================================================
-# GIT SUBMODULES INITIALIZATION
-# ============================================================================
-
-dotfiles_echo "Initializing git submodules..."
-git submodule update --init --recursive
 
 echo
 

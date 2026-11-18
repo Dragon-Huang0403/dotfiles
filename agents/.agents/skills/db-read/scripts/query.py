@@ -3,25 +3,29 @@
 # requires-python = ">=3.11"
 # dependencies = ["pymysql==1.2.4", "cryptography==50.0.2", "sqlglot==30.30.0"]
 # ///
-"""Bounded, read-only DQS MySQL investigation. Never print raw dependency errors."""
+"""Run one read-only DQS SELECT from stdin and return JSON."""
 
 import argparse
 import datetime
 import decimal
 import json
 import logging
+import shutil
 import ssl
+import subprocess
 import sys
+import tempfile
 import time
+from pathlib import Path
 
 import pymysql
 import sqlglot
 from sqlglot import exp
 
-import kvm
+import dqs_credentials
 
-MAX_ROWS = 200
-MAX_BYTES = 1024 * 1024
+MAX_ROWS = 10000
+BATCH_SIZE = 1000
 MAX_SQL_BYTES = 64 * 1024
 # A positive syntax allowlist: new parser nodes fail closed.
 NODES = set(
@@ -53,10 +57,11 @@ ANONYMOUS_FUNCTIONS = {
 
 
 class SafeError(Exception):
-    pass
+    """An error whose message is safe to expose in JSON diagnostics."""
 
 
-def validate_sql(sql):
+def prepare_sql(sql, *, fetch_all=False, raw=False):
+    """Validate every mode, then apply only the selected limit/rewrite policy."""
     if not sql.strip() or len(sql.encode()) > MAX_SQL_BYTES:
         raise SafeError("Provide one SELECT of at most 64 KiB.")
     try:
@@ -101,9 +106,11 @@ def validate_sql(sql):
             bound = min(int(value.this), MAX_ROWS + 1)
         else:
             bound = MAX_ROWS + 1
-        return tree.limit(bound).sql(
-            dialect="mysql", unsupported_level=sqlglot.ErrorLevel.RAISE
-        )
+        if raw:
+            return sql
+        if not fetch_all:
+            tree = tree.limit(bound)
+        return tree.sql(dialect="mysql", unsupported_level=sqlglot.ErrorLevel.RAISE)
     except SafeError:
         raise
     except Exception:
@@ -112,7 +119,8 @@ def validate_sql(sql):
         ) from None
 
 
-def clean(value, secrets):
+def sanitize_value(value, secrets):
+    """Make values JSON-compatible and redact connection secrets before staging."""
     if value is None or isinstance(value, (bool, int, float)):
         return value
     if isinstance(value, bytes):
@@ -122,7 +130,7 @@ def clean(value, secrets):
     elif isinstance(value, (decimal.Decimal, datetime.timedelta)):
         value = str(value)
     elif isinstance(value, (list, tuple)):
-        return [clean(x, secrets) for x in value]
+        return [sanitize_value(x, secrets) for x in value]
     else:
         value = str(value)
     for secret in sorted(secrets, key=len, reverse=True):
@@ -131,23 +139,61 @@ def clean(value, secrets):
     return value
 
 
+def configure_read_only_session(connection):
+    """Verify TLS and establish a read-only transaction before executing user SQL."""
+    cursor = connection.cursor()
+    cursor.execute("SHOW SESSION STATUS LIKE 'Ssl_cipher'")
+    tls = cursor.fetchone()
+    if not tls or not tls[1]:
+        raise SafeError("Server did not negotiate TLS; connection closed.")
+    cursor.execute(
+        "SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION'"
+    )
+    cursor.execute("SET SESSION max_execution_time = 10000")
+    cursor.execute("SET SESSION lock_wait_timeout = 5")
+    cursor.execute("SET SESSION TRANSACTION READ ONLY")
+    cursor.execute("SELECT @@session.transaction_read_only")
+    if cursor.fetchone()[0] != 1:
+        raise SafeError("Read-only session could not be verified.")
+    cursor.execute("START TRANSACTION READ ONLY")
+    cursor.close()
+
+
+def write_result_rows(cursor, output, secrets, row_limit):
+    """Write the rows array incrementally; the caller appends result metadata."""
+    output.write('{"rows":[')
+    count = 0
+    truncated = False
+    while batch := cursor.fetchmany(BATCH_SIZE):
+        for row in batch:
+            if row_limit is not None and count >= row_limit:
+                truncated = True
+                continue
+            if count:
+                output.write(",")
+            json.dump(sanitize_value(row, secrets), output, ensure_ascii=True)
+            count += 1
+    output.write("]")
+    return count, truncated
+
+
 def investigate(
-    target,
     sql,
+    output,
+    *,
     database=None,
     explain=False,
     db_key=None,
-    kvm_host=None,
-    credential_role="ro",
+    fetch_all=False,
+    raw=False,
 ):
-    if target != "dqs":
-        raise SafeError("Only the DQS target is supported.")
-    validated = validate_sql(sql)
+    """Execute a validated read and stage JSON; the caller publishes it on success."""
+    validated = prepare_sql(sql, fetch_all=fetch_all, raw=raw)
     if not db_key:
         raise SafeError("DQS requires an exact --db-key from the KVM database list.")
     try:
-        fields, port = kvm.credentials(db_key, kvm_host, credential_role)
-    except kvm.CredentialError as error:
+        fields, port = dqs_credentials.load_credentials(db_key)
+    except dqs_credentials.CredentialError as error:
         raise SafeError(str(error)) from None
     secrets = [fields.get(k, "") for k in ("password", "username", "hostname")]
     connection = None
@@ -171,40 +217,28 @@ def investigate(
             autocommit=False,
             charset="utf8mb4",
         )
-        cursor = connection.cursor()
-        cursor.execute("SHOW SESSION STATUS LIKE 'Ssl_cipher'")
-        tls = cursor.fetchone()
-        if not tls or not tls[1]:
-            raise SafeError("Server did not negotiate TLS; connection closed.")
-        cursor.execute(
-            "SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION'"
-        )
-        cursor.execute("SET SESSION max_execution_time = 10000")
-        cursor.execute("SET SESSION lock_wait_timeout = 5")
-        cursor.execute("SET SESSION TRANSACTION READ ONLY")
-        cursor.execute("SELECT @@session.transaction_read_only")
-        if cursor.fetchone()[0] != 1:
-            raise SafeError("Read-only session could not be verified.")
-        cursor.execute("START TRANSACTION READ ONLY")
+        configure_read_only_session(connection)
+        cursor = connection.cursor(pymysql.cursors.SSCursor)
         cursor.execute(("EXPLAIN " if explain else "") + validated)
-        columns = clean([d[0] for d in cursor.description], secrets)
-        rows = clean(cursor.fetchmany(MAX_ROWS + 1), secrets)
+        columns = sanitize_value([d[0] for d in cursor.description], secrets)
+        row_limit = None if (fetch_all or raw or explain) else MAX_ROWS
+        count, truncated = write_result_rows(cursor, output, secrets, row_limit)
+        cursor.close()
         result = {
-            "target": target,
+            "target": "dqs",
             "columns": columns,
-            "rows": rows[:MAX_ROWS],
+            "row_count": count,
             "elapsed_seconds": round(time.monotonic() - started, 3),
             "tls": {"encrypted": True, "certificate_verified": False},
             "read_only": True,
-            "truncated": len(rows) > MAX_ROWS,
+            "truncated": truncated,
+            "db_key": sanitize_value(db_key, secrets),
+            "credential_role": "rw",
         }
-        result.update(db_key=db_key, credential_role=credential_role)
-        # Reserve space for metadata, including the truncation indicator.
-        while len(json.dumps(result, ensure_ascii=True).encode()) > MAX_BYTES:
-            if not result["rows"]:
-                raise SafeError("Result metadata exceeds the output limit.")
-            result["rows"].pop()
-            result["truncated"] = True
+        if truncated:
+            result["hint"] = "Use --fetch-all to retrieve beyond 10000 rows."
+        # Append metadata to the object opened by write_result_rows.
+        output.write("," + json.dumps(result, ensure_ascii=True)[1:] + "\n")
         return result
     except SafeError:
         raise
@@ -231,32 +265,81 @@ def investigate(
                 pass
 
 
+def run_offline_tests():
+    """Fail closed before credential access; never expose captured test output."""
+    directory = Path(__file__).resolve().parent
+    test_modules = ("test_dqs_credentials", "test_query")
+    if not all((directory / f"{name}.py").is_file() for name in test_modules):
+        raise SafeError("Required offline tests are missing; database access stopped.")
+    try:
+        result = subprocess.run(
+            [sys.executable, "-m", "unittest", *test_modules],
+            cwd=directory,
+            capture_output=True,
+            timeout=60,
+            check=False,
+        )
+    except Exception:
+        raise SafeError(
+            "Offline tests could not run; database access stopped."
+        ) from None
+    if result.returncode:
+        raise SafeError(
+            "Offline tests failed; database access stopped. "
+            "Run test_dqs_credentials and test_query locally for details."
+        )
+
+
 def main():
     logging.disable(logging.CRITICAL)
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--target", required=True, choices=["dqs"])
-    parser.add_argument("--database")
-    parser.add_argument("--db-key", required=True)
-    parser.add_argument(
-        "--kvm-host", help="SSH host (defaults to $KVM from .booking.zshrc)"
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        epilog="Connection: KVM_HOST and the selected DQS rw credentials. All modes enforce read-only SQL.",
     )
-    parser.add_argument("--credential-role", choices=["ro", "rw"], default="ro")
+    parser.add_argument(
+        "--database",
+        metavar="SCHEMA",
+        help="Override the credential entry's default schema",
+    )
+    parser.add_argument(
+        "--db-key",
+        required=True,
+        metavar="KEY",
+        help="Credential key from dqs_credentials.py --list",
+    )
     mode = parser.add_mutually_exclusive_group()
-    mode.add_argument("--check", action="store_true")
-    mode.add_argument("--explain", action="store_true")
+    mode.add_argument(
+        "--explain",
+        action="store_true",
+        help="Return the query plan without executing the SELECT",
+    )
+    mode.add_argument(
+        "--fetch-all",
+        action="store_true",
+        help="Remove the helper's 10000-row cap",
+    )
+    mode.add_argument(
+        "--raw",
+        action="store_true",
+        help="Validate and execute the original SELECT unchanged, without a row cap",
+    )
     args = parser.parse_args()
     try:
-        sql = "SELECT 1" if args.check else sys.stdin.read(MAX_SQL_BYTES + 1)
-        result = investigate(
-            args.target,
-            sql,
-            args.database,
-            args.explain,
-            args.db_key,
-            args.kvm_host,
-            args.credential_role,
-        )
-        print(json.dumps(result, ensure_ascii=True))
+        run_offline_tests()
+        sql = sys.stdin.read(MAX_SQL_BYTES + 1)
+        # TemporaryFile is private and removed on close, including error exits.
+        with tempfile.TemporaryFile(mode="w+", encoding="utf-8") as output:
+            investigate(
+                sql,
+                output,
+                database=args.database,
+                explain=args.explain,
+                db_key=args.db_key,
+                fetch_all=args.fetch_all,
+                raw=args.raw,
+            )
+            output.seek(0)
+            shutil.copyfileobj(output, sys.stdout)
         return 0
     except SafeError as error:
         print(json.dumps({"error": str(error)}), file=sys.stderr)

@@ -73,6 +73,29 @@ select_db_credential_from_kvm(){
     jq --arg db "$db" '.database[$db]' <<<"$json"
 }
 
+connect_dqs_db(){
+    local credentials
+    credentials="$(select_db_credential_from_kvm)" || return
+    jq -e '.rw | .driver == "mysql" and (.host | length > 0) and (.username | length > 0) and (.database | length > 0) and (.password | type == "string")' <<< "$credentials" >/dev/null || {
+        print -u2 'Missing or invalid rw MySQL credentials'
+        return 1
+    }
+    DATABASE="$(jq -r '.rw.database' <<< "$credentials")"
+    HOST="$(jq -r '.rw.host' <<< "$credentials")"
+    USER="$(jq -r '.rw.username' <<< "$credentials")"
+    echo ">> Connecting to $DATABASE on $HOST as $USER"
+    echo ">> To list all databases: SHOW DATABASES;"
+    echo ">> To list tables in the selected database: SHOW TABLES;"
+    echo "\n============================================================\n"
+    mycli \
+        --host "$HOST" \
+        --port "$(jq -r '.rw.port // 3306' <<< "$credentials")" \
+        --user "$USER" \
+        --database "$DATABASE" \
+        --password-file <(jq -jr '.rw.password' <<< "$credentials") \
+        --use-keyring false
+}
+
 kvm() {
     ssh $KVM_HOST
 }

@@ -406,10 +406,14 @@ readonly -a STOW_IGNORE_DIRECTORIES=(
 
 # Initialize before Stow so skill symlink targets exist on fresh clones.
 dotfiles_echo "Initializing git submodules..."
-git submodule update --init --recursive -- . ':(exclude)vendor/chrome-devtools-mcp' ':(exclude)vendor/booking-coding-agent-tools' || exit 1
+git submodule update --init --recursive -- . ':(exclude)vendor/chrome-devtools-mcp' ':(exclude)vendor/booking-coding-agent-tools' ':(exclude)vendor/herdr' || exit 1
 # Only the CLI skill is needed; do not initialize Chrome's build dependencies.
 git -c submodule.recurse=false submodule update --init --depth=1 -- vendor/chrome-devtools-mcp || exit 1
 git -C vendor/chrome-devtools-mcp sparse-checkout set --cone skills/chrome-devtools-cli || exit 1
+
+# Only the Herdr agent skill is needed from the application repository.
+git -c submodule.recurse=false submodule update --init --depth=1 -- vendor/herdr || exit 1
+git -C vendor/herdr sparse-checkout set --cone skills/herdr || exit 1
 
 readonly -a BOOKING_SKILLS=(bk-cli harness servicemesh src-cli check-flog-errors check-bks-metrics)
 # Keep all Booking skills available locally; only link the selected common skills.
@@ -508,6 +512,7 @@ sync_upstream_skills() {
 dotfiles_echo "Syncing upstream skill symlinks..."
 sync_upstream_skills mattpocock-skills skills || exit 1
 sync_upstream_skills chrome-devtools-mcp skills chrome-devtools-cli || exit 1
+sync_upstream_skills herdr skills herdr || exit 1
 sync_upstream_skills booking-coding-agent-tools common/skills "${BOOKING_SKILLS[@]}" || exit 1
 sync_upstream_skills booking-coding-agent-tools fintech/partner-payments/partner-payments-onboarding/skills slo-breach-investigation || exit 1
 

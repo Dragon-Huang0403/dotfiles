@@ -21,3 +21,7 @@
 	path = vendor/booking-coding-agent-tools
 	url = git@gitlab.com:booking-com/genai-eng/coding-agent-tools.git
 	shallow = true
+[submodule "vendor/herdr"]
+	path = vendor/herdr
+	url = https://github.com/herdrdev/herdr.git
+	shallow = true

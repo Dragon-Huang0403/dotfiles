@@ -125,5 +125,9 @@ bindkey -e
 [ -x "$HOME/.fabric/bin/fabric" ] && export PATH="$HOME/.fabric/bin:$PATH"
 # <<< fabric <<<
 
+
+# Herdr Completion
+source <(herdr completion zsh)
+
 # Always return success
 true

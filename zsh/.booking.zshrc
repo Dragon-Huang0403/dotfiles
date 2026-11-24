@@ -82,17 +82,17 @@ connect_dqs_db(){
     }
     DATABASE="$(jq -r '.rw.database' <<< "$credentials")"
     HOST="$(jq -r '.rw.host' <<< "$credentials")"
-    USER="$(jq -r '.rw.username' <<< "$credentials")"
-    echo ">> Connecting to $DATABASE on $HOST as $USER"
+    MYSQL_USER="$(jq -r '.ro.username' <<< "$credentials")"
+    echo ">> Connecting to $DATABASE on $HOST as $MYSQL_USER"
     echo ">> To list all databases: SHOW DATABASES;"
     echo ">> To list tables in the selected database: SHOW TABLES;"
     echo "\n============================================================\n"
     mycli \
         --host "$HOST" \
         --port "$(jq -r '.rw.port // 3306' <<< "$credentials")" \
-        --user "$USER" \
+        --user "$MYSQL_USER" \
         --database "$DATABASE" \
-        --password-file <(jq -jr '.rw.password' <<< "$credentials") \
+        --password-file <(jq -jr '.ro.password' <<< "$credentials") \
         --use-keyring false
 }
 
@@ -101,5 +101,5 @@ kvm() {
 }
 
 bl(){
-    bk auth:login && glab auth login --hostname gitlab.com # && acli auth login
+    bk auth:login && glab auth login --hostname gitlab.com && ssh -A ssh.booking.com # && acli auth login
 }
